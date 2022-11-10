@@ -1,16 +1,18 @@
+import java.util.ArrayList;
+
 public class Server {
     String name;
     int stage;
     boolean busy;
-    Queue enterQueue;
     Customer serving;
-    Queue nextQueue;
+    Clock clock;
 
-    Server(String name, int stage, Queue queue){
+
+    Server(String name, int stage, Queue queue,Clock clock){
         this.name = name;
         this.stage = stage;
-        this.enterQueue = queue;
         busy = false;
+        this.clock = clock;
     }
     boolean isBusy(){
         return busy;
@@ -18,19 +20,23 @@ public class Server {
     String getName(){
         return name;
     }
-    boolean serve(){
-        if(busy || enterQueue.isEmpty()){
-            return false;
+
+    int serve(Customer serving){
+        if(busy){
+            return -1;
         }
         else{
-            serving = enterQueue.getCustomer();
+            int arrival = clock.getTime();
+            serving.addArrival(arrival);
             busy = true;
+            int serviceTime = 1;
+            
             //something with the time
 
             //leaving server
-            serving.incStage();
-            nextQueue.addCustomer(serving);
-            return true;
+            int departure = clock.getTime() + serviceTime;
+            serving.addDeparture(departure);
+            return departure;
         }
     }
 }
