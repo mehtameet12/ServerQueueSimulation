@@ -1,18 +1,20 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+
 public class ThreeServerQueueSimulation{    
     //Class Variables
-    int sizeOfQueue;
-    int clientInQueue1;
+   int sizeOfQueue;
+    /*int clientInQueue1;
     int clientInQueue2;
     int clientInQueue3;
     
     // 0 indicates Server Available, 1 indicates Server Busy
-    int serverOneBusy;
-    int serverTwoBusy;
-    int serverThreeBusy;
+   /* boolean serverOneBusy;
+    boolean serverTwoBusy;
+    boolean serverThreeBusy;
 
     double clock;
-    double simulationTime;
+    double simulationTime;*/
 
     double[] arrivalTimeServer1;
     double[] arrivalTimeServer2;
@@ -22,19 +24,41 @@ public class ThreeServerQueueSimulation{
     double[] departureTimeServer2;
     double[] departureTimeServer3;
 
+    Server server1;
+    Server server2;
+    Server server3;
+
+    Queue queue1;
+    Queue queue2;
+    Queue queue3;
+
+    static Clock clock;
 
     void initialize(){
         sizeOfQueue = 100;
-        clientInQueue1 = 0;
+      /*  clientInQueue1 = 0;
         clientInQueue2 = 0;
-        clientInQueue3 = 0;
+        clientInQueue3 = 0;*/
+
+        clock = new Clock();
         
-        serverOneBusy = 0;
-        serverTwoBusy = 0;
-        serverThreeBusy = 0;
+        queue1 = new Queue("Queue1", 1);
+        queue2 = new Queue("Queue2", 2);
+        queue3 = new Queue("Queue3", 3);
+
+        server1 = new Server("Server1",1, queue1, clock);
+        server2 = new Server("Server2",2, queue2, clock);
+        server3 = new Server("Server3",3, queue3, clock);
+
+
+
+
+      /*  serverOneBusy = false;
+        serverTwoBusy = false;
+        serverThreeBusy = false;
 
         clock = 0.0;
-        simulationTime = 0.0;
+        simulationTime = 0.0;*/
 
         arrivalTimeServer1 = new double[sizeOfQueue];
         arrivalTimeServer2 = new double[sizeOfQueue];
@@ -45,11 +69,19 @@ public class ThreeServerQueueSimulation{
         departureTimeServer3 = new double[sizeOfQueue];
     }
     public static void main(String args[]){
+        ArrayList <Event> eventList = new ArrayList<Event>();
+        ArrayList<Customer> cs = new ArrayList<Customer>();
+        for(int i = 0; i < 20; i++){
+            cs.add(new Customer());
+        }
+        eventList.add(new Event(eventName.ArrivalS1, clock.getTime()));
+
+       
         
     }
 
-    public void handleArrivalAtServerOne(){
-        if (serverOneBusy == 0){
+/*    public void handleArrivalAtServerOne(){
+        if (!server1.isBusy()){
             //Sever 1 serves the customer 
         }else{
             setClientInQueue1();
@@ -57,7 +89,7 @@ public class ThreeServerQueueSimulation{
     }
 
     public void handleArrivalAtServerTwo(){
-        if(serverTwoBusy == 0){
+        if(!server2.isBusy()){
             //Server 2 serves the customer
         }else{
             setClientInQueue2();
@@ -65,7 +97,7 @@ public class ThreeServerQueueSimulation{
     }
 
     public void handleArrivalAtServerThree(){
-        if(serverThreeBusy == 0){
+        if(!server3.isBusy()){
             //Server 3 serves the customer
         }else{
             setClientInQueue3();
@@ -117,5 +149,5 @@ public class ThreeServerQueueSimulation{
 
     public double getClock(){
         return clock;
-    }
+    }*/
 }
