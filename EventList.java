@@ -16,7 +16,9 @@ public class EventList implements Iterable<Event> {
         el.add(e);
         sort();
     }
-
+    public Event eHead(){
+        return el.getFirst();
+    }
     public void sort() {
         for (int i = 1; i < el.size(); i++) {
             for (int j = 0; j < i; j++) {

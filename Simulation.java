@@ -27,21 +27,33 @@ public class Simulation{
             }else{
                 System.out.println(curE.getEventType());
             }
-            //printStats();
+            printStats();
             //debugEL();
-
         }
     }
     public void initialArrival(){
         el.addEvent(new ArrivalEvent(1,clock+genArrivalTime()));
     }
-    public Server findServer(Event e){
+    private Server findServer(Event e){
         if(e.getServer()==1){
             return s1;
         }else if(e.getServer()==2){
             return s2;
-        }else{
+        }else if(e.getServer()==3){
             return s3;
+        }else{
+            System.out.println("Well, that wasn't supposed to happen");
+            return null;
+        }
+    }
+    private Server nextServer(int server){
+        if(server==1){
+            return s2;
+        }else if(server==2){
+            return s3;
+        }else{
+            System.out.println("mark");
+            return null;
         }
     }
     public void eventArrive(Event e){
@@ -58,8 +70,14 @@ public class Simulation{
     }
     public void eventDepart(Event e){
         Server curServer = findServer(e);
-        if(e.getServer()!=3)
-            el.addEvent(new ArrivalEvent(e.getServer()+1, clock));
+        Server nextServer = nextServer(e.getServer());
+        if(e.getServer()<3){
+            if(nextServer.isBusy()){
+                nextServer.addToQueue(customer);
+            }else{
+                el.addEvent(new ArrivalEvent(e.getServer()+1, clock));
+            }
+        }
         if(curServer.getQueueLength()>0){
             curServer.removeFromQueue();
             el.addEvent(new DepartureEvent(e.getServer(), clock+genServiceTime()));
@@ -75,16 +93,19 @@ public class Simulation{
         System.out.println("/////");
     }
     public void printStats(){
+        System.out.println("Clock is "+clock);
         String res = (s1.isBusy())?"active":"inactive";
         System.out.println("S1 currently is currently: "+res+". S1 has "+s1.getQueueLength()+" people in queue.");
         res = (s2.isBusy())?"active":"inactive";
         System.out.println("S2 currently is currently: "+res+". S2 has "+s2.getQueueLength()+" people in queue.");
         res = (s3.isBusy())?"active":"inactive";
         System.out.println("S3 currently is currently: "+res+". S3 has "+s3.getQueueLength()+" people in queue.");
+        System.out.println("Server "+el.eHead().getServer()+"'s next event occurse at "+el.eHead().getDuration()+" and is of "+el.eHead().getClass());
+        
         System.out.println();
     }
     public double genArrivalTime(){             //create ranges later
-        return 1;
+        return 2;
     }
     public double genServiceTime(){             //create ranges later
         return 3;
