@@ -1,11 +1,26 @@
 public class Event {
-    eventName name;
-    int time;
-    Event(eventName en, int time){
-        this.name = en;
-        this.time = time;
+    int server;
+    double duration;
+
+    public Event(int server){
+        this.server = server;
+        this.duration = -1;
     }
-    eventName getName(){
-        return name;
+
+    public Event(int server, double duration){
+        this.server = server;
+        this.duration = duration;
+    }
+
+    public double getDuration(){
+        return duration;
+    }
+
+    public int getServer(){
+        return server;
+    }
+
+    public String getEventType(){
+        return "none";
     }
 }

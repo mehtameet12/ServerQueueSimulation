@@ -1,42 +1,28 @@
-import java.util.ArrayList;
 
 public class Server {
-    String name;
-    int stage;
-    boolean busy;
-    Customer serving;
-    Clock clock;
+    private int queue;
+    private int processing;
 
-
-    Server(String name, int stage, Queue queue,Clock clock){
-        this.name = name;
-        this.stage = stage;
-        busy = false;
-        this.clock = clock;
-    }
-    boolean isBusy(){
-        return busy;
-    }
-    String getName(){
-        return name;
+    public Server(){
+        queue = 0;
+        processing = 0;
     }
 
-    int serve(Customer serving){
-        if(busy){
-            return -1;
-        }
-        else{
-            int arrival = clock.getTime();
-            serving.addArrival(arrival);
-            busy = true;
-            int serviceTime = 1;
-            
-            //something with the time
+    public boolean isBusy(){
+        return processing>0;
+    }
 
-            //leaving server
-            int departure = clock.getTime() + serviceTime;
-            serving.addDeparture(departure);
-            return departure;
-        }
+    public void addToQueue(int customer){
+        queue++;
+    }
+    public int getQueueLength(){
+        return queue;
+    }
+    public void service(int customer){
+        processing = customer;
+    }
+
+    public void removeFromQueue(){
+        queue--;
     }
 }
