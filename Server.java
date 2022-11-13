@@ -18,8 +18,11 @@ public class Server {
     public int getQueueLength(){
         return queue;
     }
-    public void service(int customer){
-        processing = customer;
+    public void service(){
+        processing = 1;
+    }
+    public void setIdle(){
+        processing = 0;
     }
 
     public void removeFromQueue(){

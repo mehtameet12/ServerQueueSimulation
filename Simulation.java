@@ -17,15 +17,16 @@ public class Simulation{
     }
     public void run(double duration){
         initialArrival();
+        printStats();
         while(clock<duration){
             Event curE = el.getEvent();
-            clock+=curE.getDuration();
+            clock=curE.getDuration();
             if(curE.getEventType().equals("arrival")){
                 eventArrive(curE);
-            }else if(curE.getEventType().equals("arrival")){
+            }else if(curE.getEventType().equals("departure")){
                 eventDepart(curE);
             }else{
-                System.out.println("error");
+                System.out.println(curE.getEventType());
             }
         }
     }
@@ -46,11 +47,12 @@ public class Simulation{
         if(curServer.isBusy()){
             curServer.addToQueue(customer);
         }else{
-            curServer.service(customer);
+            curServer.service();
             el.add(new DepartureEvent(e.getServer(), clock+ genServiceTime()));
         }
         if(e.getServer()==1)
             el.add(new ArrivalEvent(e.getServer(), clock+genArrivalTime()));
+        printStats();
     }
     public void eventDepart(Event e){
         Server curServer = findServer(e);
@@ -59,17 +61,31 @@ public class Simulation{
         if(curServer.getQueueLength()>0){
             curServer.removeFromQueue();
             el.add(new DepartureEvent(e.getServer(), clock+genServiceTime()));
+        }else{
+            curServer.setIdle();
         }
+        printStats();
+    }
+
+    public void printStats(){
+        String res = (s1.isBusy())?"active":"inactive";
+        System.out.println("S1 currently is currently: "+res+". S1 has "+s1.getQueueLength()+" people in queue.");
+        res = (s2.isBusy())?"active":"inactive";
+        System.out.println("S2 currently is currently: "+res+". S2 has "+s2.getQueueLength()+" people in queue.");
+        res = (s3.isBusy())?"active":"inactive";
+        System.out.println("S3 currently is currently: "+res+". S3 has "+s3.getQueueLength()+" people in queue.");
+        System.out.println();
     }
     public double genArrivalTime(){             //create ranges later
-        return 4;
+        return 1;
     }
     public double genServiceTime(){             //create ranges later
         return 3;
     }
-    public void main(String[] args){
+
+    public static void main(String[] args){
         Simulation s = new Simulation();
-        s.run(200);
+        s.run(15);
     }
 
 }
