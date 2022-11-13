@@ -34,6 +34,15 @@ public class EventList implements Iterable<Event> {
                     el.set(j, el.get(i));
                     el.set(i, tmp);
                 }
+                if(el.get(j).getDuration() == el.get(i).getDuration() &&
+                        ((el.get(j).getEventType().equals("end")&&
+                        el.get(i).getEventType().equals("departure"))||
+                        el.get(j).getEventType().equals("end")&&
+                        el.get(i).getEventType().equals("arrival"))){
+                    Event tmp = el.get(j);
+                    el.set(j, el.get(i));
+                    el.set(i, tmp);
+                }
 
             }
         }

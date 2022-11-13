@@ -6,7 +6,9 @@ public class Event {
         this.server = server;
         this.duration = -1;
     }
-
+    public Event(double duration){
+        this.duration = duration;
+    }
     public Event(int server, double duration){
         this.server = server;
         this.duration = duration;

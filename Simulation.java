@@ -1,4 +1,5 @@
-
+import java.util.Scanner;
+import java.lang.Exception;
 public class Simulation{
     double clock;
     Server s1;
@@ -16,20 +17,33 @@ public class Simulation{
         el = new EventList();
     }
     public void run(double duration){
+        String end = "";
         initialArrival();
-        while(clock<duration){
+        printStats(end);
+        el.addEvent(new EndEvent(duration));
+        while(!el.eHead().getEventType().equals("end")){
             Event curE = el.getEvent();
             clock=curE.getDuration();
             if(curE.getEventType().equals("arrival")){
                 eventArrive(curE);
+                if(el.eHead().getEventType().equals("end")){
+                    end = "end";
+                }
+                printStats(end);
+                end = "";
             }else if(curE.getEventType().equals("departure")){
                 eventDepart(curE);
-            }else{
-                System.out.println(curE.getEventType());
+                if(el.eHead().getEventType().equals("end")){
+                    end = "end";
+                }
+                printStats(end);
+                end = "";
+                    
             }
-            printStats();
+            
             //debugEL();
         }
+        System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".");
     }
     public void initialArrival(){
         el.addEvent(new ArrivalEvent(1,clock+genArrivalTime()));
@@ -52,7 +66,6 @@ public class Simulation{
         }else if(server==2){
             return s3;
         }else{
-            System.out.println("mark");
             return null;
         }
     }
@@ -62,7 +75,7 @@ public class Simulation{
             curServer.addToQueue(customer);
         }else{
             curServer.service();
-            el.addEvent(new DepartureEvent(e.getServer(), clock+ genServiceTime()));
+            el.addEvent(new DepartureEvent(e.getServer(), clock+ genServiceTime(e.getServer())));
         }
         if(e.getServer()==1)
             el.addEvent(new ArrivalEvent(e.getServer(), clock+genArrivalTime()));
@@ -80,7 +93,7 @@ public class Simulation{
         }
         if(curServer.getQueueLength()>0){
             curServer.removeFromQueue();
-            el.addEvent(new DepartureEvent(e.getServer(), clock+genServiceTime()));
+            el.addEvent(new DepartureEvent(e.getServer(), clock+genServiceTime(e.getServer())));
         }else{
             curServer.setIdle();
         }
@@ -92,28 +105,47 @@ public class Simulation{
         }
         System.out.println("/////");
     }
-    public void printStats(){
+    public void printStats(String e){
         System.out.println("Clock is "+clock);
         String res = (s1.isBusy())?"active":"inactive";
-        System.out.println("S1 currently is currently: "+res+". S1 has "+s1.getQueueLength()+" people in queue.");
+        System.out.println("S1 is currently: "+res+". S1 has "+s1.getQueueLength()+" people in queue.");
         res = (s2.isBusy())?"active":"inactive";
-        System.out.println("S2 currently is currently: "+res+". S2 has "+s2.getQueueLength()+" people in queue.");
+        System.out.println("S2 is currently: "+res+". S2 has "+s2.getQueueLength()+" people in queue.");
         res = (s3.isBusy())?"active":"inactive";
-        System.out.println("S3 currently is currently: "+res+". S3 has "+s3.getQueueLength()+" people in queue.");
-        System.out.println("Server "+el.eHead().getServer()+"'s next event occurse at "+el.eHead().getDuration()+" and is of "+el.eHead().getClass());
-        
+        System.out.println("S3 is currently: "+res+". S3 has "+s3.getQueueLength()+" people in queue.");
+        if(e.equals("end")){
+            System.out.println("The next event occurs at "+el.eHead().getDuration()+" and is of "+el.eHead().getClass());
+        }else{
+            System.out.println("Server "+el.eHead().getServer()+"'s next event occurs at "+el.eHead().getDuration()+" and is of "+el.eHead().getClass());
+        }
         System.out.println();
     }
     public double genArrivalTime(){             //create ranges later
-        return 2;
+        return GenerateTimes.generateArrival();
     }
-    public double genServiceTime(){             //create ranges later
-        return 3;
+    public double genServiceTime(int server){             //create ranges later
+        if(server==1){
+            return GenerateTimes.generateS1();
+        }else if(server==2){
+            return GenerateTimes.generateS2();
+        }else{
+            return GenerateTimes.generateS3();
+        }
     }
-
-    public static void main(String[] args){
+    private static double getDuration(String str)throws Exception{
+        double duration=0;
+        try{
+            duration = Double.parseDouble(str);
+        }catch(Exception e){
+            System.out.println("Please enter a numeric value for the duration measured in seconds");
+        }
+        return duration;
+    }
+    public static void main(String[] args) throws Exception{
+        Scanner sc = new Scanner(System.in);
         Simulation s = new Simulation();
-        s.run(15);
+        System.out.println("Enter how long the simulation should run:");
+        s.run(getDuration(sc.next()));
     }
 
 }
