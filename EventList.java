@@ -1,13 +1,18 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 
-public class EventList {
+public class EventList implements Iterable<Event> {
     LinkedList<Event> el;
+
+    public Iterator<Event> iterator() {
+        return el.iterator();
+    }
 
     public EventList() {
         el = new LinkedList<Event>();
     }
 
-    public void add(Event e) {
+    public void addEvent(Event e) {
         el.add(e);
         sort();
     }
@@ -19,7 +24,7 @@ public class EventList {
                     Event tmp = el.get(j);
                     el.set(j, el.get(i));
                     el.set(i, tmp);
-                } 
+                }
                 else if (el.get(j).getDuration() == el.get(i).getDuration() &&
                         el.get(j).getEventType().equals("arrival") &&
                         el.get(i).getEventType().equals("departure")) {
@@ -27,6 +32,7 @@ public class EventList {
                     el.set(j, el.get(i));
                     el.set(i, tmp);
                 }
+
             }
         }
     }

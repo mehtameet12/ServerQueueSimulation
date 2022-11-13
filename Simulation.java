@@ -17,7 +17,6 @@ public class Simulation{
     }
     public void run(double duration){
         initialArrival();
-        printStats();
         while(clock<duration){
             Event curE = el.getEvent();
             clock=curE.getDuration();
@@ -28,10 +27,13 @@ public class Simulation{
             }else{
                 System.out.println(curE.getEventType());
             }
+            //printStats();
+            //debugEL();
+
         }
     }
     public void initialArrival(){
-        el.add(new ArrivalEvent(1,clock+genArrivalTime()));
+        el.addEvent(new ArrivalEvent(1,clock+genArrivalTime()));
     }
     public Server findServer(Event e){
         if(e.getServer()==1){
@@ -48,25 +50,30 @@ public class Simulation{
             curServer.addToQueue(customer);
         }else{
             curServer.service();
-            el.add(new DepartureEvent(e.getServer(), clock+ genServiceTime()));
+            el.addEvent(new DepartureEvent(e.getServer(), clock+ genServiceTime()));
         }
         if(e.getServer()==1)
-            el.add(new ArrivalEvent(e.getServer(), clock+genArrivalTime()));
-        printStats();
+            el.addEvent(new ArrivalEvent(e.getServer(), clock+genArrivalTime()));
+
     }
     public void eventDepart(Event e){
         Server curServer = findServer(e);
         if(e.getServer()!=3)
-            el.add(new ArrivalEvent(e.getServer()+1, clock));
+            el.addEvent(new ArrivalEvent(e.getServer()+1, clock));
         if(curServer.getQueueLength()>0){
             curServer.removeFromQueue();
-            el.add(new DepartureEvent(e.getServer(), clock+genServiceTime()));
+            el.addEvent(new DepartureEvent(e.getServer(), clock+genServiceTime()));
         }else{
             curServer.setIdle();
         }
-        printStats();
+        
     }
-
+    public void debugEL(){
+        for(Event e: el){
+            System.out.println("Server "+e.getServer()+" takes "+e.getDuration()+" and is a "+e.getEventType());
+        }
+        System.out.println("/////");
+    }
     public void printStats(){
         String res = (s1.isBusy())?"active":"inactive";
         System.out.println("S1 currently is currently: "+res+". S1 has "+s1.getQueueLength()+" people in queue.");
