@@ -13,27 +13,27 @@ public class Simulation{
         s1 = new Server();
         s2 = new Server();
         s3 = new Server();
-        customer = 1;
         el = new EventList();
+        customer = 0;
     }
     public void run(double duration){
         String end = "";
         initialArrival();
         printStats(end);
-        el.addEvent(new EndEvent(duration));
-        while(!el.eHead().getEventType().equals("end")){
+        el.addEvent(new Event(duration, EventType.END));
+        while(!(el.eHead().getEventType()==EventType.END)){
             Event curE = el.getEvent();
             clock=curE.getDuration();
-            if(curE.getEventType().equals("arrival")){
+            if(curE.getEventType()==EventType.ARRIVAL){
                 eventArrive(curE);
-                if(el.eHead().getEventType().equals("end")){
+                if(el.eHead().getEventType()==EventType.END){
                     end = "end";
                 }
                 printStats(end);
                 end = "";
-            }else if(curE.getEventType().equals("departure")){
+            }else if(curE.getEventType()==EventType.DEPARTURE){
                 eventDepart(curE);
-                if(el.eHead().getEventType().equals("end")){
+                if(el.eHead().getEventType()==EventType.END){
                     end = "end";
                 }
                 printStats(end);
@@ -43,10 +43,11 @@ public class Simulation{
             
             //debugEL();
         }
-        System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".");
+        System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".\n");
     }
     public void initialArrival(){
-        el.addEvent(new ArrivalEvent(1,clock+genArrivalTime()));
+        el.addEvent(new Event(1,clock+genArrivalTime(), EventType.ARRIVAL));
+        customer++;
     }
     private Server findServer(Event e){
         if(e.getServer()==1){
@@ -72,13 +73,16 @@ public class Simulation{
     public void eventArrive(Event e){
         Server curServer = findServer(e);
         if(curServer.isBusy()){
-            curServer.addToQueue(customer);
+            curServer.addToQueue();
         }else{
             curServer.service();
-            el.addEvent(new DepartureEvent(e.getServer(), clock+ genServiceTime(e.getServer())));
+            el.addEvent(new Event(e.getServer(), clock+ genServiceTime(e.getServer()),EventType.DEPARTURE));
         }
-        if(e.getServer()==1)
-            el.addEvent(new ArrivalEvent(e.getServer(), clock+genArrivalTime()));
+        if(e.getServer()==1){
+            el.addEvent(new Event(e.getServer(), clock+genArrivalTime(), EventType.ARRIVAL));
+            customer++;
+        }
+            
 
     }
     public void eventDepart(Event e){
@@ -86,14 +90,14 @@ public class Simulation{
         Server nextServer = nextServer(e.getServer());
         if(e.getServer()<3){
             if(nextServer.isBusy()){
-                nextServer.addToQueue(customer);
+                nextServer.addToQueue();
             }else{
-                el.addEvent(new ArrivalEvent(e.getServer()+1, clock));
+                el.addEvent(new Event(e.getServer()+1, clock, EventType.ARRIVAL));
             }
         }
         if(curServer.getQueueLength()>0){
             curServer.removeFromQueue();
-            el.addEvent(new DepartureEvent(e.getServer(), clock+genServiceTime(e.getServer())));
+            el.addEvent(new Event(e.getServer(), clock+genServiceTime(e.getServer()), EventType.DEPARTURE));
         }else{
             curServer.setIdle();
         }
@@ -114,9 +118,9 @@ public class Simulation{
         res = (s3.isBusy())?"active":"inactive";
         System.out.println("S3 is currently: "+res+". S3 has "+s3.getQueueLength()+" people in queue.");
         if(e.equals("end")){
-            System.out.println("The next event occurs at "+el.eHead().getDuration()+" and is of "+el.eHead().getClass());
+            System.out.println("The next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
         }else{
-            System.out.println("Server "+el.eHead().getServer()+"'s next event occurs at "+el.eHead().getDuration()+" and is of "+el.eHead().getClass());
+            System.out.println("Server "+el.eHead().getServer()+"'s next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
         }
         System.out.println();
     }
@@ -141,11 +145,16 @@ public class Simulation{
         }
         return duration;
     }
+    private void printData(){
+        System.out.println("Total customers served:"+customer);
+        
+    }
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
         Simulation s = new Simulation();
         System.out.println("Enter how long the simulation should run:");
         s.run(getDuration(sc.next()));
+        s.printData();
     }
 
 }

@@ -28,17 +28,17 @@ public class EventList implements Iterable<Event> {
                     el.set(i, tmp);
                 }
                 else if (el.get(j).getDuration() == el.get(i).getDuration() &&
-                        el.get(j).getEventType().equals("arrival") &&
-                        el.get(i).getEventType().equals("departure")) {
+                        el.get(j).getEventType()==EventType.ARRIVAL &&
+                        el.get(i).getEventType()==EventType.DEPARTURE) {
                     Event tmp = el.get(j);
                     el.set(j, el.get(i));
                     el.set(i, tmp);
                 }
                 if(el.get(j).getDuration() == el.get(i).getDuration() &&
-                        ((el.get(j).getEventType().equals("end")&&
-                        el.get(i).getEventType().equals("departure"))||
-                        el.get(j).getEventType().equals("end")&&
-                        el.get(i).getEventType().equals("arrival"))){
+                        ((el.get(j).getEventType()==EventType.END&&
+                        el.get(i).getEventType()==EventType.DEPARTURE)||
+                        el.get(j).getEventType()==EventType.END&&
+                        el.get(i).getEventType()==EventType.ARRIVAL)){
                     Event tmp = el.get(j);
                     el.set(j, el.get(i));
                     el.set(i, tmp);

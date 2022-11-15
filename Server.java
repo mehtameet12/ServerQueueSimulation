@@ -12,7 +12,7 @@ public class Server {
         return processing>0;
     }
 
-    public void addToQueue(int customer){
+    public void addToQueue(){
         queue++;
     }
     public int getQueueLength(){

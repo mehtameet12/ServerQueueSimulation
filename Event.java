@@ -1,17 +1,16 @@
 public class Event {
     int server;
     double duration;
+    EventType type;
 
-    public Event(int server){
-        this.server = server;
-        this.duration = -1;
-    }
-    public Event(double duration){
+    public Event(double duration, EventType type){
         this.duration = duration;
+        this.type = type;
     }
-    public Event(int server, double duration){
+    public Event(int server, double duration, EventType type){
         this.server = server;
         this.duration = duration;
+        this.type = type;
     }
 
     public double getDuration(){
@@ -22,7 +21,19 @@ public class Event {
         return server;
     }
 
-    public String getEventType(){
-        return "none";
+    public String getClassName(){
+        if(type==EventType.END){
+            return "End of Simulation";
+        }else if(type==EventType.ARRIVAL){
+            return "Arrival";
+        }else if(type==EventType.DEPARTURE){
+            return "Departure";
+        }else{
+            return "non-existent";
+        }
+    }
+
+    public EventType getEventType(){
+        return type;
     }
 }
