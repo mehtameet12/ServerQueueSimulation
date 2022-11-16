@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.lang.Exception;
 public class Simulation{
     double clock;                                           //variable to keep track of time
-    double prevClock;                                       //create a variable that will store the previous iteration of the clock value
     
     Server s1;                                              //server object variables
     Server s2;                                              
@@ -37,7 +36,6 @@ public class Simulation{
             System.out.println("Please enter a valid number");
         }
         clock = 0;                                          //initializes Simulation variables
-        prevClock = 0; 
         s1 = new Server();
         s2 = new Server();
         s3 = new Server();
@@ -64,32 +62,23 @@ public class Simulation{
         showSteps = true;
     }
     public void run(){
-        String end = "";                                        //when set to "end" value, displays the end of simulation message
         initialArrival();                                       //create the first arrival event and add to Event List
-        if(showSteps)printSteps(end);                           //if showSteps toggled on, display what happens in the first step
         el.addEvent(new Event(duration, EventType.END));        //add the end of simulation event to the Event List
+        if(showSteps)printSteps(el.eHead().getEventType());     //if showSteps toggled on, display what happens in the first step
 
         while(!(el.eHead().getEventType()==EventType.END)){     //if we haven't reached the end of the simulation event, loop:
             Event curE = el.getEvent();                         //remove the next event from the Event List
             clock=curE.getDuration();                           //take the clock value of this event (@ what time this event occurs)
             if(curE.getEventType()==EventType.ARRIVAL){         //if the event taken is an ARRIVAL EVENT
                 eventArrive(curE);                              //execute the Arrival event operations
-                if(el.eHead().getEventType()==EventType.END){   //check if the next event is an END OF SIMULATION
-                    end = "end";                                //append the END OF SIMULATION message to original message
-                }
-                if(showSteps)printSteps(end);                   //show what occurs in this step if showSteps is toggled on
-                end = "";
+                
+                if(showSteps)printSteps(el.eHead().getEventType()); //show what occurs in this step if showSteps is toggled on
+                
             }else if(curE.getEventType()==EventType.DEPARTURE){ //if the event is a DEPARTURE EVENT
                 eventDepart(curE);                              //execute the operations for a Departure event
-                if(el.eHead().getEventType()==EventType.END){   //check if the next event is an END of SIMULATION
-                    end = "end";                                //append the END OF SIMULATION message to original message
-                }
-                if(showSteps)printSteps(end);                   //show what occurs in this step if showSteps is toggled on
-                end = "";    
-            }
-            
-            calculateWaitTimes(clock-prevClock);                //calculate the total wait times for all servers
-            prevClock = clock;                                  //update the previous iteration of clock's value to the current one
+                if(showSteps)printSteps(el.eHead().getEventType()); //show what occurs in this step if showSteps is toggled on
+                  
+            }calculateWait();
             
         }
         System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".\n");
@@ -128,17 +117,20 @@ public class Simulation{
         Server curServer = findServer(e);                                   //find the server that has to deal with this Event
         if(curServer.isBusy()){                                             //if this server is busy, increment its queue
             curServer.addToQueue();
+            
         }else{
             curServer.service();                                            //if there is no one being serviced, set the server to busy
             double time = genServiceTime(e.getServer());                    //generate a random server time
             el.addEvent(new Event(e.getServer(), clock+ time,EventType.DEPARTURE)); //create a new DEPARTURE EVENT and add it to the Event List
             incrementRespectiveTime(e.getServer(),time);                    //add the service time for this server
             calculateBusyTime(e.getServer(),time);
+            
         }
         if(e.getServer()==1){                                               //if this is server 1, we also want to create the next interarrival time
             double time = genArrivalTime();
             el.addEvent(new Event(e.getServer(), clock+time, EventType.ARRIVAL));
             incrementRespectiveTime(0,time);                        //add this interarrival time to the total
+            
         }
     }
     private void eventDepart(Event e){                                      //process to take if this is a DEPARTURE EVENT
@@ -149,6 +141,7 @@ public class Simulation{
                 nextServer.addToQueue();
             }else{
                 el.addEvent(new Event(e.getServer()+1, clock, EventType.ARRIVAL)); //otherwise start servicing customer by creating an ARRIVAL EVENT to the next server
+                
             }
         }else{
             served++;                                                       //if the current server is 3, then departure from third server means this customer finished his business here
@@ -165,10 +158,10 @@ public class Simulation{
         }
         
     }
-    private void calculateWaitTimes(double clockDiff){                      //calculates total wait time for all 3 servers
-        s1Wait+= clockDiff*s1.getQueueLength();
-        s2Wait+= clockDiff*s2.getQueueLength();
-        s3Wait+= clockDiff*s3.getQueueLength();
+    private void calculateWait(){                                           //calculates total wait time for each server
+        s1Wait+=s1.getQueueLength()*(el.eHead().getDuration()-clock);
+        s2Wait+=s2.getQueueLength()*(el.eHead().getDuration()-clock);
+        s3Wait+=s3.getQueueLength()*(el.eHead().getDuration()-clock);
     }
     private void calculateBusyTime(int server, double time){                //calculates total busy time for each server
         if(server==1){
@@ -217,8 +210,12 @@ public class Simulation{
                 System.out.println("Server 3 time generated: "+time+" @ clock = "+(time+clock));
         }
     }
-
-    private void printSteps(String e){                                        //prints the process of each customer moving throughout the system 
+    // private void printRemainingEvents(){                                          //displays rest of events in Event List
+    //     for(Event e:el){
+    //         System.out.println("Server "+e.getServer()+" has event type "+e.getClassName()+" @ clock = "+e.getDuration()+" remaining.");
+    //     }
+    // }
+    private void printSteps(EventType et){                                        //prints the process of each customer moving throughout the system 
         System.out.println("Clock is "+clock);
         String res = (s1.isBusy())?"active":"inactive";
         System.out.println("S1 is currently: "+res+". S1 has "+s1.getQueueLength()+" people in queue.");
@@ -226,7 +223,7 @@ public class Simulation{
         System.out.println("S2 is currently: "+res+". S2 has "+s2.getQueueLength()+" people in queue.");
         res = (s3.isBusy())?"active":"inactive";
         System.out.println("S3 is currently: "+res+". S3 has "+s3.getQueueLength()+" people in queue.");
-        if(e.equals("end")){
+        if(et==EventType.END){
             System.out.println("The next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
         }else{  
             System.out.println("Server "+el.eHead().getServer()+"'s next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
