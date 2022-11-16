@@ -13,6 +13,9 @@ public class Simulation{
     double totalServiceTimeS2;
     double totalServiceTimeS3;
     double duration;
+    double s1Wait;
+    double s2Wait;
+    double s3Wait;
 
     boolean arrivalDebug;
     boolean s1Debug;
@@ -37,17 +40,22 @@ public class Simulation{
         totalServiceTimeS2 =0;
         totalServiceTimeS3 =0;
 
+        s1Wait = 0;
+        s2Wait = 0;
+        s3Wait = 0;
+
         arrivalDebug = false;
         s1Debug = false;
         s2Debug = false;
-        s3Debug = true;
-        showSteps = false;
+        s3Debug = false;
+        showSteps = true;
     }
     public void run(){
         String end = "";
         initialArrival();
         if(showSteps)printSteps(end);
         el.addEvent(new Event(duration, EventType.END));
+        double prevClock = 0;
         while(!(el.eHead().getEventType()==EventType.END)){
             Event curE = el.getEvent();
             clock=curE.getDuration();
@@ -64,9 +72,10 @@ public class Simulation{
                     end = "end";
                 }
                 if(showSteps)printSteps(end);
-                end = "";
-                    
+                end = "";    
             }
+            calculateWaitTimes(clock-prevClock);
+            prevClock = clock;
         }
         System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".\n");
         
@@ -141,6 +150,11 @@ public class Simulation{
         }
         
     }
+    private void calculateWaitTimes(double clockDiff){
+        s1Wait+= clockDiff*s1.getQueueLength();
+        s2Wait+= clockDiff*s2.getQueueLength();
+        s3Wait+= clockDiff*s3.getQueueLength();
+    }
     private void incrementArrivalTime(double time){
         if(time+clock<=duration){
             totalArrivalTime+=time;
@@ -200,12 +214,20 @@ public class Simulation{
     }
     private void printData(){
         System.out.println("Stats: ");
-        System.out.println("Total customers in system: "+customer);
-        System.out.println("Total customers served: "+served);
+        System.out.println("Total number of customers: "+customer);
+        System.out.println("Total number of customers served: "+served);
         System.out.println("Total interarrival time: "+ totalArrivalTime);
         System.out.println("Total service time for s1: "+ totalServiceTimeS1);
         System.out.println("Total service time for s2: "+ totalServiceTimeS2);
         System.out.println("Total service time for s3: "+ totalServiceTimeS3);
+        System.out.println("---------------------------------");
+        System.out.println("Max length of server 1's queue is: "+s1.getMaxQueue());
+        System.out.println("Max length of server 2's queue is: "+s2.getMaxQueue());
+        System.out.println("Max length of server 3's queue is: "+s3.getMaxQueue());
+        System.out.println("---------------------------------");
+        System.out.println("Total wait time for server 1's queue is: "+s1Wait);
+        System.out.println("Total wait time for server 2's queue is: "+s2Wait);
+        System.out.println("Total wait time for server 3's queue is: "+s3Wait);
     }
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
