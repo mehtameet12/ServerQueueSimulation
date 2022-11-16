@@ -6,6 +6,7 @@ public class Simulation{
     Server s2;
     Server s3;
     int customer;
+    int served;
     EventList el;
     double totalArrivalTime;
     double totalServiceTimeS1;
@@ -30,6 +31,7 @@ public class Simulation{
         s3 = new Server();
         el = new EventList();
         customer = 0;
+        served = 0;
         totalArrivalTime = 0;
         totalServiceTimeS1 =0;
         totalServiceTimeS2 =0;
@@ -38,7 +40,7 @@ public class Simulation{
         arrivalDebug = false;
         s1Debug = false;
         s2Debug = false;
-        s3Debug = false;
+        s3Debug = true;
         showSteps = false;
     }
     public void run(){
@@ -124,6 +126,8 @@ public class Simulation{
             }else{
                 el.addEvent(new Event(e.getServer()+1, clock, EventType.ARRIVAL));
             }
+        }else{
+            served++;
         }
         if(curServer.getQueueLength()>0){
             curServer.removeFromQueue();
@@ -137,10 +141,10 @@ public class Simulation{
         }
         
     }
-    
     private void incrementArrivalTime(double time){
         if(time+clock<=duration){
             totalArrivalTime+=time;
+            customer++;
         }
         if(arrivalDebug)
             System.out.println("Interarrival time generated: "+time+" @ clock = "+(time+clock));
@@ -196,7 +200,8 @@ public class Simulation{
     }
     private void printData(){
         System.out.println("Stats: ");
-        System.out.println("Total customers served: "+customer);
+        System.out.println("Total customers in system: "+customer);
+        System.out.println("Total customers served: "+served);
         System.out.println("Total interarrival time: "+ totalArrivalTime);
         System.out.println("Total service time for s1: "+ totalServiceTimeS1);
         System.out.println("Total service time for s2: "+ totalServiceTimeS2);

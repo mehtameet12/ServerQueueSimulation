@@ -6,8 +6,8 @@ public class GenerateTimes {
     private static boolean arrivalDebug = false;
     private static boolean s1Debug = false;
     private static boolean s2Debug = false;
-    private static boolean s3Debug = false;
-    
+    private static boolean s3Debug = true;
+
     public static double generateArrival(){
         rnd = new Random();
         int value = rnd.nextInt(100-1+1)+1;
