@@ -1,14 +1,14 @@
 import java.util.Random;
 
 public class GenerateTimes {
-    private static Random rnd;
+    private static Random rnd;                                          //random object
 
-    private static boolean arrivalDebug = false;
+    private static boolean arrivalDebug = false;                        //debuggers when turned on helps validate program
     private static boolean s1Debug = false;
     private static boolean s2Debug = false;
     private static boolean s3Debug = false;
 
-    public static double generateArrival(){
+    public static double generateArrival(){                             //generate interarrival times
         rnd = new Random();
         int value = rnd.nextInt(100-1+1)+1;
         if(value<=35){
@@ -55,7 +55,7 @@ public class GenerateTimes {
         return 495;
         
     }
-    public static double generateS1(){
+    public static double generateS1(){                                                  //generate service times for server 1
         rnd = new Random();
         int value = rnd.nextInt(100-1+1)+1;
         if(value<=15){
@@ -98,8 +98,8 @@ public class GenerateTimes {
         if(s1Debug)System.out.println("Generate server 1 time: "+525);
         return 525;
     }
-    public static double generateS2(){
-        rnd = new Random();
+    public static double generateS2(){                                                  //generate service times for server 2
+        rnd = new Random(); 
         int value = rnd.nextInt(100-1+1)+1;
         if(value<=15){
             if(s2Debug)System.out.println("Generate server 2 time: "+15);
@@ -118,7 +118,7 @@ public class GenerateTimes {
         return 165;
         
     }
-    public static double generateS3(){
+    public static double generateS3(){                                                  //generate service times for server 3
         rnd = new Random();
         int value = rnd.nextInt(100-1+1)+1;
         if(value<=55){
