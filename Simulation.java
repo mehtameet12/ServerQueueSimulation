@@ -25,7 +25,7 @@ public class Simulation{
     boolean s2Debug;                                        //if set to true, displays server 2 service times and at what clock time
     boolean s3Debug;                                        //if set to true, displays server 3 service times and at what clock time
     boolean showSteps;                                      //if set to true, displays each individual step of the Simulation
-    
+
     public Simulation(String dur){
         try{                                                //convert user entered duration to double
             duration = Double.parseDouble(dur);
@@ -53,7 +53,7 @@ public class Simulation{
         s1Debug = false;
         s2Debug = false;
         s3Debug = false;
-        showSteps = false;
+        showSteps = true;
     }
     public void run(){
         initialArrival();                                       //create the first arrival event and add to Event List
@@ -152,17 +152,18 @@ public class Simulation{
     }
     private void calculateService(){
         totalServiceTimeS1 +=s1.getProcessing()*(el.eHead().getDuration()-clock);
-        if(s1Debug)System.out.println(s1.getProcessing()*(el.eHead().getDuration()-clock));
         totalServiceTimeS2 +=s2.getProcessing()*(el.eHead().getDuration()-clock);
-        if(s2Debug)System.out.println(s2.getProcessing()*(el.eHead().getDuration()-clock));
         totalServiceTimeS3 +=s3.getProcessing()*(el.eHead().getDuration()-clock);
-        if(s3Debug)System.out.println(s3.getProcessing()*(el.eHead().getDuration()-clock));
+        
+        if(s1Debug)System.out.println(s1.getProcessing()*(el.eHead().getDuration()-clock)+" @ clock "+el.eHead().getDuration());
+        if(s2Debug)System.out.println(s2.getProcessing()*(el.eHead().getDuration()-clock)+" @ clock "+el.eHead().getDuration());
+        if(s3Debug)System.out.println(s3.getProcessing()*(el.eHead().getDuration()-clock)+" @ clock "+el.eHead().getDuration());
     }
     private void calculateInterTime(){
         if(el.eHead().getEventType()==EventType.ARRIVAL&&el.eHead().getServer()==1)
             totalArrivalTime+=el.eHead().getEventTime();
         if(arrivalDebug)
-            System.out.println(el.eHead().getEventTime());
+            System.out.println(el.eHead().getEventTime()+" @ clock "+el.eHead().getDuration());
     }
     private void printSteps(EventType et){                                        //prints the process of each customer moving throughout the system 
         System.out.println("Clock is "+clock);
