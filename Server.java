@@ -1,12 +1,12 @@
 
 public class Server {                                           //this is the server class
     private int queue;                                          //variable to keep track of how many people in its queue
-    private boolean processing;                                 //set to true if server is busy with someone
+    private int processing;                                 //set to true if server is busy with someone
     private int maxQueue;                                       //value to store max queue length
 
     public Server(){
         queue = 0;
-        processing = false;
+        processing = 0;
         maxQueue = 0;
     }
     private void determineMaxQueue(int queueLength){            //find the max queue length
@@ -15,9 +15,11 @@ public class Server {                                           //this is the se
         }
     }
     public boolean isBusy(){                                    //method to determine if server is busy
-        return processing==true;
+        return processing==1;
     }
-
+    public int getProcessing(){
+        return processing;
+    }
     public void addToQueue(){                                   //increase the waiting line by 1
         queue++;    
         determineMaxQueue(getQueueLength());
@@ -26,10 +28,10 @@ public class Server {                                           //this is the se
         return queue;
     }
     public void service(){                                      //set server to busy
-        processing = true;
+        processing = 1;
     }
     public void setIdle(){                                      //set the server to idle
-        processing = false; 
+        processing = 0; 
     }
     public int getMaxQueue(){                                   //get max queue length that ever existed
         return maxQueue;

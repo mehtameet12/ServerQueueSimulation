@@ -34,8 +34,12 @@ public class EventList implements Iterable<Event> { // makes Event List iterable
                 else if (e.getEventType() == EventType.ARRIVAL) {               //check if event is an arrival event
                     while (el.get(i).getDuration() == e.getDuration()           //while the next event has the same clock number as the current event
                             && el.get(i).getEventType() == EventType.DEPARTURE) {//and the next event is a departure event
-                        i++;                                                    //increment counter
-                    }                                                           
+                            i++;                                                 //increment counter
+                            if(i==el.size()){                                   //if we reach the end of the list, add event to the end
+                                el.add(e);
+                                return;
+                            }
+                    }                                                       
                     el.add(i, e);                                               //once a non-departure event is found or the next event has a larger clock value             
                     return;                                                     //insert arrival event before them
                 }
@@ -43,6 +47,10 @@ public class EventList implements Iterable<Event> { // makes Event List iterable
                     while (el.get(i).getDuration() == e.getDuration()           //while the clock values are the same and
                             && (el.get(i).getEventType() == EventType.DEPARTURE ||el.get(i).getEventType()==EventType.ARRIVAL)) { //the next event is either a departure or arrival event
                         i++;                                                    //increment the counter
+                        if(i==el.size()){                                       //if we reach the end of the list, add event to the end
+                            el.add(e);
+                            return;
+                        }
                     }
                     el.add(i, e);                                               //insert the event
                     return;
@@ -54,32 +62,17 @@ public class EventList implements Iterable<Event> { // makes Event List iterable
 
     public static void main(String[] args) {
         EventList el = new EventList();                                         //testing the placement of events for Event List
-        el.addEvent(new Event(2, 10, EventType.ARRIVAL));
         el.addEvent(new Event(2, 10, EventType.DEPARTURE));
-        el.addEvent(new Event(1, 49, EventType.END));
-        el.addEvent(new Event(2, 10, EventType.ARRIVAL));
-        el.addEvent(new Event(1, 50, EventType.END));
-        el.addEvent(new Event(2, 31, EventType.END));
-        el.addEvent(new Event(3, 15, EventType.ARRIVAL));
-        el.addEvent(new Event(2, 5, EventType.END));
-        el.addEvent(new Event(1, 12, EventType.END));
-        el.addEvent(new Event(2, 20, EventType.ARRIVAL));
-        el.addEvent(new Event(3, 30, EventType.ARRIVAL));
-        el.addEvent(new Event(2, 20, EventType.DEPARTURE));
+        el.addEvent(new Event(2, 10, EventType.DEPARTURE));
+        el.addEvent(new Event(2, 10, EventType.DEPARTURE));
+        el.addEvent(new Event(2, 10, EventType.END));
         el.addEvent(new Event(2, 10, EventType.DEPARTURE));
         el.addEvent(new Event(2, 10, EventType.ARRIVAL));
+        el.addEvent(new Event(2, 10, EventType.END));
+        el.addEvent(new Event(2, 10, EventType.ARRIVAL));
+        el.addEvent(new Event(2, 10, EventType.ARRIVAL));
         el.addEvent(new Event(2, 10, EventType.DEPARTURE));
-        el.addEvent(new Event(2, 50, EventType.ARRIVAL));
-        el.addEvent(new Event(3, 50, EventType.ARRIVAL));
-        el.addEvent(new Event(2, 50, EventType.DEPARTURE));
-        el.addEvent(new Event(3, 5, EventType.ARRIVAL));
-        el.addEvent(new Event(1, 3, EventType.ARRIVAL));
-        el.addEvent(new Event(1, 3, EventType.DEPARTURE));
-        el.addEvent(new Event(2, 50, EventType.ARRIVAL));
-        el.addEvent(new Event(3, 50, EventType.ARRIVAL));
-        el.addEvent(new Event(2, 50, EventType.DEPARTURE));
-        el.addEvent(new Event(1, 49, EventType.ARRIVAL));
-        el.addEvent(new Event(1, 10, EventType.END));
+        
 
         for (Event e : el) {
             System.out.println("Next event is " + e.getEventType() + " at " + e.getDuration());

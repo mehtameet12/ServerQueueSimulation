@@ -2,6 +2,7 @@ public class Event {                                                //Event Clas
     int server;                                                     //Stores Server number of this Event
     double duration;                                                //stores at what clock time this event should occur
     EventType type;                                                 //Stores what kind of Event this is (ARRIVAL, DEPARTURE, END)
+    double eventTime;
 
     public Event(double duration, EventType type){                  //constructor for END OF SIMULATION Event          
         this.duration = duration;
@@ -13,7 +14,15 @@ public class Event {                                                //Event Clas
         this.duration = duration;
         this.type = type;
     }
-
+    public Event(int server, double clock, double eventTime, EventType type){  //constructor for ARRIVAL Events when server = 1 (helps for calculating interarrival time)
+        this.server = server;
+        this.duration = clock+eventTime;
+        this.eventTime = eventTime;
+        this.type = type;
+    }
+    public double getEventTime(){                                   //returns the time, specifically used to grab interarrival time
+        return eventTime;
+    }
     public double getDuration(){                                    //return clock time Event should occur at
         return duration;
     }

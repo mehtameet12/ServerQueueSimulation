@@ -2,26 +2,23 @@ import java.util.Scanner;
 import java.lang.Exception;
 public class Simulation{
     double clock;                                           //variable to keep track of time
-    
+    double duration;                                        //variable to store how long the code should be run
+
     Server s1;                                              //server object variables
     Server s2;                                              
     Server s3;
     int customer;                                           //total number of people who came into store
     int served;                                             //total number of people who finished being served
     EventList el;                                           //EventList Object
+    
     double totalArrivalTime;                                //variable to store total interarrival times
     double totalServiceTimeS1;                              //variable to store total service times for server 1
     double totalServiceTimeS2;                              //variable to store total service times for server 2
     double totalServiceTimeS3;                              //variable to store total service times for server 3
-    double duration;                                        //variable to store how long the code should be run
-
+    
     double s1Wait;                                          //variable to store total wait time for server 1
     double s2Wait;                                          //variable to store total wait time for server 2
     double s3Wait;                                          //variable to store total wait time for server 3
-
-    double operatingTimeS1;                                 //stores total processing time for server 1
-    double operatingTimeS2;                                 //stores total processing time for server 2
-    double operatingTimeS3;                                 //stores total processing time for server 3
 
     boolean arrivalDebug;                                   //if set to true, displays interarrival times and at what clock time
     boolean s1Debug;                                        //if set to true, displays server 1 service times and at what clock time
@@ -40,23 +37,20 @@ public class Simulation{
         s2 = new Server();
         s3 = new Server();
         el = new EventList();
-        customer = 0;
-        served = 0;
-        totalArrivalTime = 0;
-        totalServiceTimeS1 =0;
-        totalServiceTimeS2 =0;
-        totalServiceTimeS3 =0;
 
-        s1Wait = 0;
+        customer = 0;                                       //number of customers and customers served
+        served = 0;
+        totalArrivalTime = 0;                               //total interarrival times and service times for the servers
+        totalServiceTimeS1 =0;                              
+        totalServiceTimeS2 =0;                              
+        totalServiceTimeS3 =0;                              
+
+        s1Wait = 0;                                         //total wait times for the servers
         s2Wait = 0;
         s3Wait = 0;
 
-        operatingTimeS1 = 0;
-        operatingTimeS2 = 0;
-        operatingTimeS3 = 0;
-
-        arrivalDebug = false;
-        s1Debug = true;
+        arrivalDebug = false;                               //debugging option
+        s1Debug = false;
         s2Debug = false;
         s3Debug = false;
         showSteps = false;
@@ -78,17 +72,18 @@ public class Simulation{
                 eventDepart(curE);                              //execute the operations for a Departure event
                 if(showSteps)printSteps(el.eHead().getEventType()); //show what occurs in this step if showSteps is toggled on
                   
-            }calculateWait();
-            
+            }
+            calculateWait();
+            calculateService();
+            calculateInterTime();
         }
         System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".\n");
         
     }
     
     public void initialArrival(){
-        double time = genArrivalTime();                                      //generate a random time
-        el.addEvent(new Event(1,clock+time, EventType.ARRIVAL));     //create new arrival event and add to event list
-        incrementRespectiveTime(0,time);                             //add the total arrival time
+        el.addEvent(new Event(1,clock,genArrivalTime(), EventType.ARRIVAL));     //create new arrival event and add to event list
+        calculateInterTime();
     }
 
     private Server findServer(Event e){                                     //method returns the corresponding server that should process the current EVENT
@@ -115,22 +110,17 @@ public class Simulation{
 
     private void eventArrive(Event e){                                      //process to take when the next Event from Event List is an ARRIVAL EVENT
         Server curServer = findServer(e);                                   //find the server that has to deal with this Event
+        if(curServer==s1)customer++;
         if(curServer.isBusy()){                                             //if this server is busy, increment its queue
             curServer.addToQueue();
             
         }else{
             curServer.service();                                            //if there is no one being serviced, set the server to busy
-            double time = genServiceTime(e.getServer());                    //generate a random server time
-            el.addEvent(new Event(e.getServer(), clock+ time,EventType.DEPARTURE)); //create a new DEPARTURE EVENT and add it to the Event List
-            incrementRespectiveTime(e.getServer(),time);                    //add the service time for this server
-            calculateBusyTime(e.getServer(),time);
+            el.addEvent(new Event(e.getServer(), clock+ genServiceTime(e.getServer()),EventType.DEPARTURE)); //create a new DEPARTURE EVENT and add it to the Event List
             
         }
         if(e.getServer()==1){                                               //if this is server 1, we also want to create the next interarrival time
-            double time = genArrivalTime();
-            el.addEvent(new Event(e.getServer(), clock+time, EventType.ARRIVAL));
-            incrementRespectiveTime(0,time);                        //add this interarrival time to the total
-            
+            el.addEvent(new Event(e.getServer(), clock,genArrivalTime(), EventType.ARRIVAL));
         }
     }
     private void eventDepart(Event e){                                      //process to take if this is a DEPARTURE EVENT
@@ -148,11 +138,8 @@ public class Simulation{
                                                                             //increment number of people served
         }                                                                   
         if(curServer.getQueueLength()>0){                                   //departure from one server means that current server is no longer busy
-            curServer.removeFromQueue();                                    //if there are people waiting in line for this server, decrement the waiting line
-            double time = genServiceTime(e.getServer());                    
-            el.addEvent(new Event(e.getServer(), clock+time, EventType.DEPARTURE)); //start servicing person by creating a DEPARTURE EVENT
-            incrementRespectiveTime(e.getServer(),time);                    //add Server time
-            calculateBusyTime(e.getServer(),time);
+            curServer.removeFromQueue();                                    //if there are people waiting in line for this server, decrement the waiting line                 
+            el.addEvent(new Event(e.getServer(), clock+genServiceTime(e.getServer()), EventType.DEPARTURE)); //start servicing person by creating a DEPARTURE EVENT
         }else{
             curServer.setIdle();                                            //if there's no one waiting in the line, set the server to idle state
         }
@@ -163,58 +150,20 @@ public class Simulation{
         s2Wait+=s2.getQueueLength()*(el.eHead().getDuration()-clock);
         s3Wait+=s3.getQueueLength()*(el.eHead().getDuration()-clock);
     }
-    private void calculateBusyTime(int server, double time){                //calculates total busy time for each server
-        if(server==1){
-            if(time+clock<=duration)
-                operatingTimeS1+=time;
-            else                                                            //if there's an event that goes over simulation duration
-                operatingTimeS1+=time -(time+clock-duration);               //take difference of generated service time and excess value      
-        }
-        if(server==2){
-            if(time+clock<=duration)
-                operatingTimeS2+=time;
-            else
-                operatingTimeS2+=time -(time+clock-duration);
-        }
-        if(server==3){
-            if(time+clock<=duration)
-                operatingTimeS3+=time;
-            else
-                operatingTimeS3+=time -(time+clock-duration);
-        }
-       
+    private void calculateService(){
+        totalServiceTimeS1 +=s1.getProcessing()*(el.eHead().getDuration()-clock);
+        if(s1Debug)System.out.println(s1.getProcessing()*(el.eHead().getDuration()-clock));
+        totalServiceTimeS2 +=s2.getProcessing()*(el.eHead().getDuration()-clock);
+        if(s2Debug)System.out.println(s2.getProcessing()*(el.eHead().getDuration()-clock));
+        totalServiceTimeS3 +=s3.getProcessing()*(el.eHead().getDuration()-clock);
+        if(s3Debug)System.out.println(s3.getProcessing()*(el.eHead().getDuration()-clock));
     }
-    private void incrementRespectiveTime(int server, double time){          //method calculates the total interarrival and service times for the servers
-        if(server==0){
-            if(time+clock<=duration){                                       //since Event Lists can contain events that occur after END OF SIMULATION, make sure
-                                                                            //not to include times that occur after END OF SIMULATION
-                totalArrivalTime+=time;
-                customer++;
-            }
-            if(arrivalDebug)
-                System.out.println("Interarrival time generated: "+time+" @ clock = "+(time+clock));
-        }else if(server==1){
-            if(time+clock<=duration)
-                totalServiceTimeS1+=time;
-            if(s1Debug)
-                System.out.println("Server 1 time generated: "+time+" @ clock = "+(time+clock));
-        }else if(server==2){
-            if(time+clock<=duration)
-                totalServiceTimeS2+=time;
-            if(s2Debug)
-                System.out.println("Server 2 time generated: "+time+" @ clock = "+(time+clock));
-        }else if(server==3){
-            if(time+clock<=duration)
-                totalServiceTimeS3+=time;
-            if(s3Debug)
-                System.out.println("Server 3 time generated: "+time+" @ clock = "+(time+clock));
-        }
+    private void calculateInterTime(){
+        if(el.eHead().getEventType()==EventType.ARRIVAL&&el.eHead().getServer()==1)
+            totalArrivalTime+=el.eHead().getEventTime();
+        if(arrivalDebug)
+            System.out.println(el.eHead().getEventTime());
     }
-    // private void printRemainingEvents(){                                          //displays rest of events in Event List
-    //     for(Event e:el){
-    //         System.out.println("Server "+e.getServer()+" has event type "+e.getClassName()+" @ clock = "+e.getDuration()+" remaining.");
-    //     }
-    // }
     private void printSteps(EventType et){                                        //prints the process of each customer moving throughout the system 
         System.out.println("Clock is "+clock);
         String res = (s1.isBusy())?"active":"inactive";
@@ -247,22 +196,18 @@ public class Simulation{
         System.out.println("Stats: ");  
         System.out.println("Total number of customers: "+customer);
         System.out.println("Total number of customers served: "+served);
-        System.out.println("Total interarrival time: "+ totalArrivalTime);
-        System.out.println("Total service time for s1: "+ totalServiceTimeS1);
-        System.out.println("Total service time for s2: "+ totalServiceTimeS2);
-        System.out.println("Total service time for s3: "+ totalServiceTimeS3);
+        System.out.println("Average interarrival time: "+ totalArrivalTime/customer);
+        System.out.println("Average service time for s1: "+ totalServiceTimeS1/customer);
+        System.out.println("Average service time for s2: "+ totalServiceTimeS2/customer);
+        System.out.println("Average service time for s3: "+ totalServiceTimeS3/customer);
         System.out.println("---------------------------------");
         System.out.println("Max length of server 1's queue is: "+s1.getMaxQueue());
         System.out.println("Max length of server 2's queue is: "+s2.getMaxQueue());
         System.out.println("Max length of server 3's queue is: "+s3.getMaxQueue());
         System.out.println("---------------------------------");
-        System.out.println("Total wait time for server 1's queue is: "+s1Wait);
-        System.out.println("Total wait time for server 2's queue is: "+s2Wait);
-        System.out.println("Total wait time for server 3's queue is: "+s3Wait);
-        System.out.println("---------------------------------");
-        System.out.println("Total busy time of server 1 is: "+operatingTimeS1);
-        System.out.println("Total busy time of server 2 is: "+operatingTimeS2);
-        System.out.println("Total busy time of server 3 is: "+operatingTimeS3);
+        System.out.println("Average wait time for server 1's queue is: "+s1Wait/customer);
+        System.out.println("Average wait time for server 2's queue is: "+s2Wait/customer);
+        System.out.println("Average wait time for server 3's queue is: "+s3Wait/customer);
     }
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
