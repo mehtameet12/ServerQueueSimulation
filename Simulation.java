@@ -56,10 +56,10 @@ public class Simulation{
         operatingTimeS3 = 0;
 
         arrivalDebug = false;
-        s1Debug = false;
+        s1Debug = true;
         s2Debug = false;
         s3Debug = false;
-        showSteps = true;
+        showSteps = false;
     }
     public void run(){
         initialArrival();                                       //create the first arrival event and add to Event List

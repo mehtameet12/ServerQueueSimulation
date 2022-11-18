@@ -1,4 +1,4 @@
-import java.util.Random;
+import java.util.Random;                                                //add seed
 
 public class GenerateTimes {
     private static Random rnd;                                          //random object
