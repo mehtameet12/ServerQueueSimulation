@@ -9,28 +9,28 @@ public class GenerateTimes {
     private static boolean s3Debug = false;
 
     public static int generateArrival(){                             //generate interarrival times
-        rnd = new Random(0);
+        rnd = new Random();
         double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
         double value = 97.2 * Math.log(1/(1-x));
         return (int) value;
     }
 
     public static int generateS1(){                                                  //generate service times for server 1
-        rnd = new Random(0);
+        rnd = new Random();
         double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
         double value = 91.65 * Math.log(1/(1-x));
         return (int) value;
     }
 
     public static int generateS2(){                                                  //generate service times for server 2
-        rnd = new Random(0); 
+        rnd = new Random(); 
         double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
         double value = 57.3 * Math.log(1/(1-x));
         return (int) value;
     }
 
     public static int generateS3(){                                                  //generate service times for server 3
-        rnd = new Random(0);
+        rnd = new Random();
         double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
         double value = 31.2 * Math.log(1/(1-x));
         return (int) value;

@@ -197,18 +197,18 @@ public class Simulation{
         System.out.println("Stats: ");  
         System.out.println("Total number of customers: "+customer);
         System.out.println("Total number of customers served: "+served);
-        System.out.println("Average interarrival time: "+ totalArrivalTime/customer);
-        System.out.println("Average service time for s1: "+ totalServiceTimeS1/customer);
-        System.out.println("Average service time for s2: "+ totalServiceTimeS2/customer);
-        System.out.println("Average service time for s3: "+ totalServiceTimeS3/customer);
+        System.out.println("Average interarrival time: "+ (int)totalArrivalTime/customer);
+        System.out.println("Average service time for s1: "+ (int)totalServiceTimeS1/customer);
+        System.out.println("Average service time for s2: "+ (int)totalServiceTimeS2/customer);
+        System.out.println("Average service time for s3: "+ (int)totalServiceTimeS3/customer);
         System.out.println("---------------------------------");
         System.out.println("Max length of server 1's queue is: "+s1.getMaxQueue());
         System.out.println("Max length of server 2's queue is: "+s2.getMaxQueue());
         System.out.println("Max length of server 3's queue is: "+s3.getMaxQueue());
         System.out.println("---------------------------------");
-        System.out.println("Average wait time for server 1's queue is: "+s1Wait/customer);
-        System.out.println("Average wait time for server 2's queue is: "+s2Wait/customer);
-        System.out.println("Average wait time for server 3's queue is: "+s3Wait/customer);
+        System.out.println("Average wait time for server 1's queue is: "+(int)s1Wait/customer);
+        System.out.println("Average wait time for server 2's queue is: "+(int)s2Wait/customer);
+        System.out.println("Average wait time for server 3's queue is: "+(int)s3Wait/customer);
     }
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
