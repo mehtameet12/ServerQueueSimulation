@@ -10,7 +10,9 @@ public class GenerateTimes {
 
     public static double generateArrival(){                             //generate interarrival times
         rnd = new Random();
-        int value = rnd.nextInt(100-1+1)+1;
+        double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
+        double value = 97.2 * Math.log(1/(1-x));
+
         if(value<=35){
             if(arrivalDebug)System.out.println("Generate interarrival time: "+15);
             return 15;
@@ -52,12 +54,14 @@ public class GenerateTimes {
             return 435;
         }
         if(arrivalDebug)System.out.println("Generate interarrival time: "+495);
-        return 495;
-        
+        return 495;    
     }
+
     public static double generateS1(){                                                  //generate service times for server 1
         rnd = new Random();
-        int value = rnd.nextInt(100-1+1)+1;
+        double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
+        double value = 91.65 * Math.log(1/(1-x));
+
         if(value<=15){
             if(s1Debug)System.out.println("Generate server 1 time: "+15);
             return 15;
@@ -98,9 +102,12 @@ public class GenerateTimes {
         if(s1Debug)System.out.println("Generate server 1 time: "+525);
         return 525;
     }
+
     public static double generateS2(){                                                  //generate service times for server 2
         rnd = new Random(); 
-        int value = rnd.nextInt(100-1+1)+1;
+        double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
+        double value = 57.3 * Math.log(1/(1-x));
+
         if(value<=15){
             if(s2Debug)System.out.println("Generate server 2 time: "+15);
             return 15;
@@ -118,9 +125,12 @@ public class GenerateTimes {
         return 165;
         
     }
+
     public static double generateS3(){                                                  //generate service times for server 3
         rnd = new Random();
-        int value = rnd.nextInt(100-1+1)+1;
+        double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
+        double value = 31.2 * Math.log(1/(1-x));
+
         if(value<=55){
             if(s3Debug)System.out.println("Generate server 3 time: "+15);
             return 15;
@@ -132,7 +142,6 @@ public class GenerateTimes {
         return 75;
     }
     
-
     public static void main(String[] args){
         Random rnd = new Random();
         int x = rnd.nextInt(100-1+1)+1;
@@ -140,7 +149,6 @@ public class GenerateTimes {
             x = rnd.nextInt(100-1+1)+1;
             System.out.println(x);
 
-        }
-        
+        }        
     }
 }

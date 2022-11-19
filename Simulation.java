@@ -212,7 +212,7 @@ public class Simulation{
     }
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter how long the simulation should run:");
+        System.out.print("Enter how long the simulation should run: ");
         Simulation s = new Simulation(sc.next());
         s.run();
         s.printData();
