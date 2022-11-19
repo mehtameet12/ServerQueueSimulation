@@ -1,42 +1,42 @@
-import java.util.ArrayList;
 
-public class Server {
-    String name;
-    int stage;
-    boolean busy;
-    Customer serving;
-    Clock clock;
+public class Server {                                           //this is the server class
+    private int queue;                                          //variable to keep track of how many people in its queue
+    private int processing;                                 //set to true if server is busy with someone
+    private int maxQueue;                                       //value to store max queue length
 
-
-    Server(String name, int stage, Queue queue,Clock clock){
-        this.name = name;
-        this.stage = stage;
-        busy = false;
-        this.clock = clock;
+    public Server(){
+        queue = 0;
+        processing = 0;
+        maxQueue = 0;
     }
-    boolean isBusy(){
-        return busy;
-    }
-    String getName(){
-        return name;
-    }
-
-    int serve(Customer serving){
-        if(busy){
-            return -1;
+    private void determineMaxQueue(int queueLength){            //find the max queue length
+        if(maxQueue<queueLength){
+            maxQueue = queueLength;
         }
-        else{
-            int arrival = clock.getTime();
-            serving.addArrival(arrival);
-            busy = true;
-            int serviceTime = 1;
-            
-            //something with the time
-
-            //leaving server
-            int departure = clock.getTime() + serviceTime;
-            serving.addDeparture(departure);
-            return departure;
-        }
+    }
+    public boolean isBusy(){                                    //method to determine if server is busy
+        return processing==1;
+    }
+    public int getProcessing(){
+        return processing;
+    }
+    public void addToQueue(){                                   //increase the waiting line by 1
+        queue++;    
+        determineMaxQueue(getQueueLength());
+    }
+    public int getQueueLength(){                                //get the current waiting line length
+        return queue;
+    }
+    public void service(){                                      //set server to busy
+        processing = 1;
+    }
+    public void setIdle(){                                      //set the server to idle
+        processing = 0; 
+    }
+    public int getMaxQueue(){                                   //get max queue length that ever existed
+        return maxQueue;
+    }
+    public void removeFromQueue(){                              //decrease the waiting line length by 1
+        queue--;
     }
 }
