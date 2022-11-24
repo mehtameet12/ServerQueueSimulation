@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.lang.Exception;
-public class Simulation{
+public class DoubleServerOne{
     double clock;                                           //variable to keep track of time
     double duration;                                        //variable to store how long the code should be run
 
@@ -26,7 +26,7 @@ public class Simulation{
     boolean s3Debug;                                        //if set to true, displays server 3 service times and at what clock time
     boolean showSteps;                                      //if set to true, displays each individual step of the Simulation
 
-    public Simulation(String dur){
+    public DoubleServerOne(String dur){
         try{                                                //convert user entered duration to double
             duration = Double.parseDouble(dur);
         }catch(Exception e){
@@ -220,7 +220,7 @@ public class Simulation{
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter how long the simulation should run:");
-        Simulation s = new Simulation(sc.next());
+        DoubleServerOne s = new DoubleServerOne(sc.next());
         s.run();
         s.printData();
         sc.close();

@@ -4,11 +4,11 @@ import java.util.LinkedList;
 public class EventList implements Iterable<Event> { // makes Event List iterable, so can view all Events in Event List
     LinkedList<Event> el; // create structure to store all events
 
-    public Iterator<Event> iterator() {
+    public Iterator<Event> iterator() {             //makes event list iterable
         return el.iterator();
     }
 
-    public EventList() {
+    public EventList() {                            //constructor
         el = new LinkedList<Event>();
     }
 
