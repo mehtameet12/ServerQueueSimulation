@@ -24,7 +24,6 @@ public class DoubleServerOne{
     boolean s2Debug;                                        //if set to true, displays server 2 service times and at what clock time
     boolean s3Debug;                                        //if set to true, displays server 3 service times and at what clock time
     boolean showSteps;                                      //if set to true, displays each individual step of the Simulation
-    int swap = 0;
 
     public DoubleServerOne(String dur){
         
@@ -94,12 +93,10 @@ public class DoubleServerOne{
 
     private Server findServer(Event e){                                     //method returns the corresponding server that should process the current EVENT
         if(e.getServer()==1){                                               
-            if(swap==0) {
-                swap = 1;
-                return s1a;
+            if(s1a.getQueueLength()>s1b.getQueueLength()) {
+                return s1b;
             }
-            swap = 0;
-            return s1b;
+            return s1a;
         }else if(e.getServer()==2){
             return s2;
         }else if(e.getServer()==3){
@@ -229,20 +226,21 @@ public class DoubleServerOne{
         System.out.println("Stats: ");  
         System.out.println("Total number of customers: " + customer);
         System.out.println("Total number of customers served: " + served);
-        System.out.println("Average interarrival time: " + totalArrivalTime/customer);
-        System.out.println("Average service time for s1a: " + totalServiceTimeS1a/customer);
-        System.out.println("Average service time for s1b: " + totalServiceTimeS1b/customer);
-        System.out.println("Average service time for s2: " + totalServiceTimeS2/customer);
-        System.out.println("Average service time for s3: " + totalServiceTimeS3/customer);
+        System.out.println("Average interarrival time: " + (int) totalArrivalTime/customer);
+        System.out.println("Average service time for s1a: " + (int) totalServiceTimeS1a/customer);
+        System.out.println("Average service time for s1b: " + (int) totalServiceTimeS1b/customer);
+        System.out.println("Average service time for s2: " + (int) totalServiceTimeS2/customer);
+        System.out.println("Average service time for s3: " + (int) totalServiceTimeS3/customer);
         System.out.println("---------------------------------");
-        System.out.println("Max length of server 1's queue is: " + (s1a.getMaxQueue() > s1b.getMaxQueue() ? s1a.getMaxQueue() : s1b.getMaxQueue()) );
-        System.out.println("Max length of server 2's queue is: " + s2.getMaxQueue());
-        System.out.println("Max length of server 3's queue is: " + s3.getMaxQueue());
+        System.out.println("Max length of server 1a's queue is: " + (int) s1a.getMaxQueue());
+        System.out.println("Max length of server 1b's queue is: " + (int) s1b.getMaxQueue());
+        System.out.println("Max length of server 2's queue is: " + (int) s2.getMaxQueue());
+        System.out.println("Max length of server 3's queue is: " + (int) s3.getMaxQueue());
         System.out.println("---------------------------------");
-        System.out.println("Average wait time for server 1a's queue is: " + s1aWait/customer);
-        System.out.println("Average wait time for server 1b's queue is: " + s1bWait/customer);
-        System.out.println("Average wait time for server 2's queue is: " + s2Wait/customer);
-        System.out.println("Average wait time for server 3's queue is: " + s3Wait/customer);
+        System.out.println("Average wait time for server 1a's queue is: " + (int) s1aWait/customer);
+        System.out.println("Average wait time for server 1b's queue is: " + (int) s1bWait/customer);
+        System.out.println("Average wait time for server 2's queue is: " + (int) s2Wait/customer);
+        System.out.println("Average wait time for server 3's queue is: " + (int) s3Wait/customer);
     }
 
     public static void main(String[] args) throws Exception{
