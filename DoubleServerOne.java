@@ -235,8 +235,7 @@ public class DoubleServerOne{
         System.out.println("Average service time for s2: " + totalServiceTimeS2/customer);
         System.out.println("Average service time for s3: " + totalServiceTimeS3/customer);
         System.out.println("---------------------------------");
-        System.out.println("Max length of server 1a's queue is: " + s1a.getMaxQueue());
-        System.out.println("Max length of server 1b's queue is: " + s1b.getMaxQueue());
+        System.out.println("Max length of server 1's queue is: " + (s1a.getMaxQueue() > s1b.getMaxQueue() ? s1a.getMaxQueue() : s1b.getMaxQueue()) );
         System.out.println("Max length of server 2's queue is: " + s2.getMaxQueue());
         System.out.println("Max length of server 3's queue is: " + s3.getMaxQueue());
         System.out.println("---------------------------------");
