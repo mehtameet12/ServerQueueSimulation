@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.lang.Exception;
-public class Simulation{
+
+public class ParallelServerSimulation{
+    
     double clock;                                           //variable to keep track of time
     double duration;                                        //variable to store how long the code should be run
 
@@ -26,14 +28,14 @@ public class Simulation{
     boolean s3Debug;                                        //if set to true, displays server 3 service times and at what clock time
     boolean showSteps;                                      //if set to true, displays each individual step of the Simulation
 
-    public Simulation(String dur){
+    public ParallelServerSimulation(String dur){
         try{                                                //convert user entered duration to double
             duration = Double.parseDouble(dur);
         }catch(Exception e){
             System.out.println("Please enter a valid number");
         }
         clock = 0;                                          //initializes Simulation variables
-        s1 = new Server();
+        s1 = new Server(2);
         s2 = new Server();
         s3 = new Server();
         el = new EventList();
@@ -204,23 +206,23 @@ public class Simulation{
         System.out.println("Stats: ");  
         System.out.println("Total number of customers: "+customer);
         System.out.println("Total number of customers served: "+served);
-        System.out.println("Average interarrival time: "+ totalArrivalTime/customer);
-        System.out.println("Average service time for s1: "+ totalServiceTimeS1/customer);
-        System.out.println("Average service time for s2: "+ totalServiceTimeS2/customer);
-        System.out.println("Average service time for s3: "+ totalServiceTimeS3/customer);
+        System.out.println("Average interarrival time: "+ (int) totalArrivalTime/customer);
+        System.out.println("Average service time for s1: "+ (int) totalServiceTimeS1/customer);
+        System.out.println("Average service time for s2: "+ (int) totalServiceTimeS2/customer);
+        System.out.println("Average service time for s3: "+ (int) totalServiceTimeS3/customer);
         System.out.println("---------------------------------");
         System.out.println("Max length of server 1's queue is: "+s1.getMaxQueue());
         System.out.println("Max length of server 2's queue is: "+s2.getMaxQueue());
         System.out.println("Max length of server 3's queue is: "+s3.getMaxQueue());
         System.out.println("---------------------------------");
-        System.out.println("Average wait time for server 1's queue is: "+s1Wait/customer);
-        System.out.println("Average wait time for server 2's queue is: "+s2Wait/customer);
-        System.out.println("Average wait time for server 3's queue is: "+s3Wait/customer);
+        System.out.println("Average wait time for server 1's queue is: "+ (int) s1Wait/customer);
+        System.out.println("Average wait time for server 2's queue is: "+ (int) s2Wait/customer);
+        System.out.println("Average wait time for server 3's queue is: "+ (int) s3Wait/customer);
     }
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter how long the simulation should run:");
-        Simulation s = new Simulation(sc.next());
+        System.out.print("Enter how long the simulation should run: ");
+        ParallelServerSimulation s = new ParallelServerSimulation(sc.next());
         s.run();
         s.printData();
         sc.close();
