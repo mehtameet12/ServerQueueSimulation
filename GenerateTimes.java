@@ -3,11 +3,6 @@ import java.util.Random;                                                //add se
 public class GenerateTimes {
     private static Random rnd;                                          //random object
 
-    private static boolean arrivalDebug = false;                        //debuggers when turned on helps validate program
-    private static boolean s1Debug = false;
-    private static boolean s2Debug = false;
-    private static boolean s3Debug = false;
-
     public static int generateArrival(){                             //generate interarrival times
         rnd = new Random();
         double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
@@ -20,6 +15,13 @@ public class GenerateTimes {
         double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
         double value = 91.65 * Math.log(1/(1-x));
         return (int) value;
+    }
+
+    public static int generateS1Enhanced(){                                                  //generate service times for server 1
+        rnd = new Random();
+        double x = 0 + (1 - 0) * rnd.nextDouble(); // Generate random value between 0 and 1
+        double value = 91.65 * Math.log(1/(1-x));
+        return (int) (value*0.8);
     }
 
     public static int generateS2(){                                                  //generate service times for server 2

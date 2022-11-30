@@ -1,5 +1,6 @@
 
 public class Server {                                           //this is the server class
+    
     private int queue;                                          //variable to keep track of how many people in its queue
     private int processing;                                 //set to true if server is busy with someone
     private int maxQueue;                                       //value to store max queue length

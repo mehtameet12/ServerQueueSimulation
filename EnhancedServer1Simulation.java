@@ -1,8 +1,6 @@
-import java.util.Scanner;
 import java.lang.Exception;
 
-public class ParallelServerSimulation{
-    
+public class EnhancedServer1Simulation {
     double clock;                                           //variable to keep track of time
     double duration;                                        //variable to store how long the code should be run
 
@@ -28,14 +26,14 @@ public class ParallelServerSimulation{
     boolean s3Debug;                                        //if set to true, displays server 3 service times and at what clock time
     boolean showSteps;                                      //if set to true, displays each individual step of the Simulation
 
-    public ParallelServerSimulation(String dur){
+    public EnhancedServer1Simulation(String dur){
         try{                                                //convert user entered duration to double
             duration = Double.parseDouble(dur);
         }catch(Exception e){
             System.out.println("Please enter a valid number");
         }
         clock = 0;                                          //initializes Simulation variables
-        s1 = new Server(2);
+        s1 = new Server();
         s2 = new Server();
         s3 = new Server();
         el = new EventList();
@@ -58,9 +56,9 @@ public class ParallelServerSimulation{
         showSteps = true;
     }
     public void run(){
-        el.addEvent(new Event(duration, EventType.END));        //add the end of simulation event to the Event List
         initialArrival();                                       //create the first arrival event and add to Event List
-        if(showSteps)printSteps(el.eHead().getEventType());     //if showSteps toggled on, display what happens in the first step
+        el.addEvent(new Event(duration, EventType.END));        //add the end of simulation event to the Event List
+        // if(showSteps)printSteps(el.eHead().getEventType());     //if showSteps toggled on, display what happens in the first step
 
         while(!(el.eHead().getEventType()==EventType.END)){     //if we haven't reached the end of the simulation event, loop:
             Event curE = el.getEvent();                         //remove the next event from the Event List
@@ -68,18 +66,18 @@ public class ParallelServerSimulation{
             if(curE.getEventType()==EventType.ARRIVAL){         //if the event taken is an ARRIVAL EVENT
                 eventArrive(curE);                              //execute the Arrival event operations
                 
-                if(showSteps)printSteps(el.eHead().getEventType()); //show what occurs in this step if showSteps is toggled on
+                // if(showSteps)printSteps(el.eHead().getEventType()); //show what occurs in this step if showSteps is toggled on
                 
             }else if(curE.getEventType()==EventType.DEPARTURE){ //if the event is a DEPARTURE EVENT
                 eventDepart(curE);                              //execute the operations for a Departure event
-                if(showSteps)printSteps(el.eHead().getEventType()); //show what occurs in this step if showSteps is toggled on
+                // if(showSteps)printSteps(el.eHead().getEventType()); //show what occurs in this step if showSteps is toggled on
                   
             }
             calculateWait();
             calculateService();
             calculateInterTime();
         }
-        System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".\n");
+        // System.out.println("The end of the simulation has been reached at time "+el.getEvent().getDuration()+".\n");
         
     }
     
@@ -175,18 +173,11 @@ public class ParallelServerSimulation{
         System.out.println("S2 is currently: "+res+". S2 has "+s2.getQueueLength()+" people in queue.");
         res = (s3.isBusy())?"active":"inactive";
         System.out.println("S3 is currently: "+res+". S3 has "+s3.getQueueLength()+" people in queue.");
-        // if(et==EventType.END){
-        //     System.out.println("The next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
-        // }else{  
-        //     System.out.println("Server "+el.eHead().getServer()+"'s next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
-        // }
-        System.out.println("The remaining Events in the Event List: ");
-        for(Event e:el){
-            if(e.getEventType()==EventType.END)
-                System.out.println("This is an "+e.getClassName()+" Event that occurs at "+e.getDuration());
-            else System.out.println("This is a(n) "+e.getClassName()+" Event belonging to Server "+e.getServer()+" that occurs at "+e.getDuration());
+        if(et==EventType.END){
+            System.out.println("The next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
+        }else{  
+            System.out.println("Server "+el.eHead().getServer()+"'s next event occurs at "+el.eHead().getDuration()+" and is a(n) "+el.eHead().getClassName()+" type.");
         }
-        
         System.out.println();
     }
 
@@ -195,37 +186,29 @@ public class ParallelServerSimulation{
     }
     private double genServiceTime(int server){                          //generate random service time
         if(server==1){
-            return GenerateTimes.generateS1();
+            return GenerateTimes.generateS1Enhanced();
         }else if(server==2){
             return GenerateTimes.generateS2();
         }else{
             return GenerateTimes.generateS3();
         }
     }
-    private void printData(){                                           //prints important stats such as total time and customers served
-        System.out.println("Stats: ");  
+    public void printData(){                                           //prints important stats such as total time and customers served
+        System.out.println("Stats for Enhanced Server 1 Simulation: ");  
         System.out.println("Total number of customers: "+customer);
         System.out.println("Total number of customers served: "+served);
-        System.out.println("Average interarrival time: "+ (int) totalArrivalTime/customer);
-        System.out.println("Average service time for s1: "+ (int) totalServiceTimeS1/customer);
-        System.out.println("Average service time for s2: "+ (int) totalServiceTimeS2/customer);
-        System.out.println("Average service time for s3: "+ (int) totalServiceTimeS3/customer);
+        System.out.println("Average interarrival time: "+ (int)totalArrivalTime/customer);
+        System.out.println("Average service time for s1: "+ (int)totalServiceTimeS1/customer);
+        System.out.println("Average service time for s2: "+ (int)totalServiceTimeS2/customer);
+        System.out.println("Average service time for s3: "+ (int)totalServiceTimeS3/customer);
         System.out.println("---------------------------------");
         System.out.println("Max length of server 1's queue is: "+s1.getMaxQueue());
         System.out.println("Max length of server 2's queue is: "+s2.getMaxQueue());
         System.out.println("Max length of server 3's queue is: "+s3.getMaxQueue());
         System.out.println("---------------------------------");
-        System.out.println("Average wait time for server 1's queue is: "+ (int) s1Wait/customer);
-        System.out.println("Average wait time for server 2's queue is: "+ (int) s2Wait/customer);
-        System.out.println("Average wait time for server 3's queue is: "+ (int) s3Wait/customer);
+        System.out.println("Average wait time for server 1's queue is: "+(int)s1Wait/customer);
+        System.out.println("Average wait time for server 2's queue is: "+(int)s2Wait/customer);
+        System.out.println("Average wait time for server 3's queue is: "+(int)s3Wait/customer);
     }
-    public static void main(String[] args) throws Exception{
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter how long the simulation should run: ");
-        ParallelServerSimulation s = new ParallelServerSimulation(sc.next());
-        s.run();
-        s.printData();
-        sc.close();
-    }
-
+    
 }

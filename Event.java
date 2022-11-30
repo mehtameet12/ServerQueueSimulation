@@ -1,4 +1,5 @@
 public class Event {                                                //Event Class
+    
     int server;                                                     //Stores Server number of this Event
     double duration;                                                //stores at what clock time this event should occur
     EventType type;                                                 //Stores what kind of Event this is (ARRIVAL, DEPARTURE, END)
