@@ -1,6 +1,6 @@
 import java.lang.Exception;
 
-public class EnhancedServer1Simulation {
+public class UpgradedServer1Simulation {
     double clock;                                           //variable to keep track of time
     double duration;                                        //variable to store how long the code should be run
 
@@ -26,7 +26,7 @@ public class EnhancedServer1Simulation {
     boolean s3Debug;                                        //if set to true, displays server 3 service times and at what clock time
     boolean showSteps;                                      //if set to true, displays each individual step of the Simulation
 
-    public EnhancedServer1Simulation(String dur){
+    public UpgradedServer1Simulation(String dur){
         try{                                                //convert user entered duration to double
             duration = Double.parseDouble(dur);
         }catch(Exception e){

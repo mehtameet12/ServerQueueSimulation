@@ -11,7 +11,7 @@ public class Main {
 
         ParallelServer1Simulation parallelServer = new ParallelServer1Simulation(input);
         RearrangedServerSimulation rearrangedServer = new RearrangedServerSimulation(input);
-        EnhancedServer1Simulation enhancedServer = new EnhancedServer1Simulation(input);
+        UpgradedServer1Simulation enhancedServer = new UpgradedServer1Simulation(input);
 
         // Parallel Server Simulation
         parallelServer.run();
@@ -23,7 +23,7 @@ public class Main {
         rearrangedServer.printData();
         System.out.println("-----------------------------------------------------------------------");
 
-        // Enhanced Server 1
+        // Upgraded Server 1
         enhancedServer.run();
         enhancedServer.printData();
 
