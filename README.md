@@ -70,7 +70,7 @@
 
 In this project, we are planning to open a new, more efficient, sandwich shop that will be as efficient as serving clients as possible. We will use existing sandwich shops to study the currently used model and test some proposed improvements. The current system consists of three servers, the first involves preparing the main components (bread, meat or substitutes, and/or cheese) of the sandwich and (optionally) toasting it. The second station involves adding the toppings to the previously prepared sandwich and wrapping it. The third and final station is the cash register. Each of these stations operate linearly and have a queue before each station. Figure 1 shows the abstract view for the main components of our system.
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.001.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.001.png)
 
 *Figure 1 Abstract figure for a sandwich shop*
 
@@ -121,7 +121,7 @@ An alternative system could entail adding a second server to the first station. 
 
 
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.002.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.002.png)
 
 *Figure 2. System Proposal 1*
 
@@ -129,7 +129,7 @@ An alternative system could entail adding a second server to the first station. 
 
 Server three has the least amount of service time among the other servers and is independent of server two and server one; having server three at the very beginning of the serving system, the server can collect the payment while helping the customer decide to place the order, taking some workload off of server one. This can reduce the service time of server one.
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.003.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.003.png)
 
 *Figure 3. System Proposal 2*
 
@@ -292,31 +292,31 @@ Table 4 Service time distribution for S3
 |<p>- Arrival at Server 1 (A1,t)</p><p>- Departure from Server 1 (D1,t)</p><p>- Arrival at Server 2 (A2,t)</p><p>- Departure from Server 2 (D2,t)</p><p>- Arrival at Server 3 (A3,t)</p><p>- Departure from Server 3 (D3,t)</p><p>- End of simulation event (E,t)</p>|<p>- LS1(t) number of clients in server 1</p><p>- LS2(t) number of clients in server 2</p><p>- LS3(t) number of clients in server 3</p><p>- LQ1(t) number of clients in queue 1</p><p>- LQ2(t) number of clients in queue 2</p><p>- LQ3(t) number of clients in queue 3</p>|
 
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.004.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.004.png)
 
 *Figure 4. Arrival event at Queue 1/Server 1 (A1)*	
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.005.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.005.png)
 
 *Figure 5. Arrival event at Queue 2/Server 2 (A2)*
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.006.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.006.png)
 
 *Figure 6. Arrival event at Queue 3/Server 3 (A3)*
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.007.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.007.png)
 
 *Figure 7. Departure event from Server 1 (D1)*
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.008.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.008.png)
 
 *Figure 8. Departure event from Server 2 (D2)*
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.009.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.009.png)
 
 *Figure 9. Departure event from Server 3 (D3)*
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.010.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.010.png)
 
 *Figure 10. End of simulation event*
 
@@ -324,13 +324,13 @@ Table 4 Service time distribution for S3
 **VII. Data Conversion into Equations for Generation of Interarrival and Service times**
 For the interarrival time, we chose an exponential model with a rate equal to 1/97.2 or 1 over the average as it modelled the collected data most faithfully 
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.011.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.011.png)
 
 *Figure 11. Comparison of interarrival times cdf with that of a normal, exponential and uniform distribution that all have the same average (and standard deviation when necessary) as the original data.*
 
 Using this result, we can generate our interarrival times by reversing the exponential equation:
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.012.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.012.png)
 
 y = 97.2\*ln(11-x)
 
@@ -340,7 +340,7 @@ This equation is used in the generatearrival() function described below.
 
 For the server 1’s service time, once again the exponential equation is the best fit for the data
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.013.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.013.png)
 
 *Figure 12. Comparison of service time for server 1’s cdf with that of a normal, exponential and uniform distribution that all have the same average (and standard deviation when necessary) as the original data.*
 
@@ -360,7 +360,7 @@ y = 91.65\*ln(11-x)
 
 For the server 2’s service time, once again the exponential equation is the best fit for the data
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.014.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.014.png)
 
 *Figure 13. Comparison of service time for server 2’s cdf with that of a normal, exponential and uniform distribution that all have the same average (and standard deviation when necessary) as the original data.*
 
@@ -372,7 +372,7 @@ y = 57.3\*ln(11-x)
 
 For the server 3’s service time, none of the models seem to adequately model it but since most of the data is shown to be within the first 15 second (0.6 in our model), we want the distribution that gives us the largest early increase in our data values, so we will select, once again the exponential distribution.
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.015.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.015.png)
 
 *Figure 14. Comparison of service time for server 3’s cdf with that of a normal, exponential and uniform distribution that all have the same average (and standard deviation when necessary) as the original data.*
 
@@ -575,7 +575,7 @@ In each of these cases, the simulation results accurately depict the real world 
 
 For this design, all the previously defined state diagrams (figures 5-10) remain the same, with the exception of the arrival event at server 1 (figure 4) is modified to have a server capacity of 2 rather than one (as can be seen in figure 15 below).
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.016.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.016.png)
 
 *Figure 15: Arrival event at Queue 1/Server 1 (A1) for experiment 1*
 
@@ -588,20 +588,20 @@ The original server class was modified so that we can specify the maximum number
 
 For this design, we are trying to determine if reordering the stations, by making the customer pay first. This changes many of our previously defined state diagrams (figures 4&6-9) although it doesn’t affect the end of simulation (figures 5, 7 &10).
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.017.png)
+![](Photos/.Words.5540d42b-4e05-4099-abbd-af696812e9f3.017.png)
 
 *Figure 15: Arrival event at Queue 3/Server 3 (A3) for experiment 2*
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.018.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.018.png)
 
 *Figure 16: Arrival event at Queue 1/Server 1 (A1) for experiment 2*
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.019.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.019.png)
 
 *Figure 17: Departure event from Queue 3/Server 3 (D3) for experiment 2*
 
 
-![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.020.png)
+![](Photos/Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.020.png)
 
 *Figure 18: Departure event from Queue 2/Server 2 (D2) for experiment 2*
 
