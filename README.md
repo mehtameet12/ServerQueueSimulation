@@ -1,4 +1,4 @@
-**Simulation of Sandwich Shop**
+# <a name="_5bzbhxmpx9zd"></a>**Simulation of Sandwich Shop**
 
 ` `**Contents**
 
@@ -65,7 +65,7 @@
 
 
 
-1. # <a name="_5bzbhxmpx9zd"></a>**Introduction**
+1. **Introduction**
 
 
 In this project, we are planning to open a new, more efficient, sandwich shop that will be as efficient as serving clients as possible. We will use existing sandwich shops to study the currently used model and test some proposed improvements. The current system consists of three servers, the first involves preparing the main components (bread, meat or substitutes, and/or cheese) of the sandwich and (optionally) toasting it. The second station involves adding the toppings to the previously prepared sandwich and wrapping it. The third and final station is the cash register. Each of these stations operate linearly and have a queue before each station. Figure 1 shows the abstract view for the main components of our system.
@@ -75,13 +75,13 @@ In this project, we are planning to open a new, more efficient, sandwich shop th
 *Figure 1 Abstract figure for a sandwich shop*
 
 To achieve this purpose, we have visited a typical sandwich shop (Subway) several times in order to observe the services’ progress. We measured interarrival times to the system as well as service times for each of the three servers.
-1. # <a name="_dmma7ts8k1n"></a>**Problem Formulation**
+1. **Problem Formulation**
 
 Based on our observations to the system under study, we can describe the process in the following steps:
 
 1. Customers enter the first queue to select their type of sandwich, bread, meat, and cheese. They also specify whether or not they would like their sandwich to be toasted or not. Based on the data collected, the expected interarrival time of the customer is ~97.2 seconds.
-1. Customers go to the ‘toppings’ station, where they select the other desired ingredients. Here, a server will add the desired toppings to the customer’s sandwich. The customer may choose to forgo toppings, however they must still pass through this station, so that the sandwich can be wrapped. Occasionally, this station may use up a particular ingredient, forcing the worker to fetch another container.
-1. The sandwich is placed in a bag and the customer may choose to add extra pre-packaged items, such as chips, beverages, or desserts before paying. The customer then leaves the system.
+2. Customers go to the ‘toppings’ station, where they select the other desired ingredients. Here, a server will add the desired toppings to the customer’s sandwich. The customer may choose to forgo toppings, however they must still pass through this station, so that the sandwich can be wrapped. Occasionally, this station may use up a particular ingredient, forcing the worker to fetch another container.
+3. The sandwich is placed in a bag and the customer may choose to add extra pre-packaged items, such as chips, beverages, or desserts before paying. The customer then leaves the system.
 
 Usually, customers take around 1 to 3 minutes at server 1. However, customers might face delays based on the order placed by the previous customer in the queue.
 
@@ -92,7 +92,8 @@ In addition, we are making the following assumptions:
 - All customers will choose something offered on the shop’s menu by the time they reach the first server, likely because they did not join the first queue until they had decided.
 - There will be no grave accidents or circumstances surrounding the system, such as natural disasters, car accidents in very proximity to the shop, kitchen fires, or medical emergencies.
 - When two or more people arrive simultaneously, they are counted as individual customers as long as they pay and order individually. If a family or other group arrived and ordered as one, they were counted as a single customer.
-# <a name="_w3dczdpevc7e"></a>**III. Objectives and Overall Project Plan**
+  
+**III. Objectives and Overall Project Plan**
 
 In this project, we are going to evaluate the system in order to open a sandwich shop that more efficiently serves customers. We are going to answer the following questions:
 
@@ -143,8 +144,9 @@ In this project we estimate the number of resources needed as follows:
 - 2 people for 3 days for data collection
 - 2 people for 3 days for data analysis
 - 2 people for 2 days for model building
-- 2 people for 2 days for report writting
-# <a name="_6bl08pc0er0t"></a>**IV. Model Conceptualization** 
+- 2 people for 2 days for report writting 
+
+**IV. Model Conceptualization** 
 
 
 <table><tr><th valign="top">System</th><th colspan="2" valign="top">Sandwich restaurant</th></tr>
@@ -157,7 +159,8 @@ In this project we estimate the number of resources needed as follows:
 </table>
 
 The entities such as payment types are not taken into account in our modelling as they are not the main focus of this study.
-# <a name="_6hhufjk258vz"></a>**V. Data Collection**
+
+**V. Data Collection**
 
 A list of 100 data points were collected from 10/12/2022 until 10/19/2022 in order to study the system. The data was taken in situ, recording the customer arrival times as well as the start and stop times for each of the three servers. The data was recorded using a shared spreadsheet in google sheets.
 
@@ -281,7 +284,7 @@ Table 4 Service time distribution for S3
 |92-00|1\.00|0\.09|9|75|
 
 # <a name="_sfc5kq172n6f"></a>
-# <a name="_3wosbdt1c71s"></a>**VI. Model Translation**
+**VI. Model Translation**
 
 
 |List of Events used in the diagrams|List of States used in the diagrams|
@@ -318,7 +321,7 @@ Table 4 Service time distribution for S3
 *Figure 10. End of simulation event*
 
 
-# <a name="_24w2p9rll0u4"></a>**VII. Data Conversion into Equations for Generation of Interarrival and Service times**
+**VII. Data Conversion into Equations for Generation of Interarrival and Service times**
 For the interarrival time, we chose an exponential model with a rate equal to 1/97.2 or 1 over the average as it modelled the collected data most faithfully 
 
 ![](Aspose.Words.5540d42b-4e05-4099-abbd-af696812e9f3.011.png)
@@ -378,7 +381,7 @@ Using the same logic as in the interarrival times above, we obtain the following
 y = 31.2\*ln(11-x)
 
 
-# <a name="_d17b6yfmpfpa"></a>**VIII. Code Discussion**
+**VIII. Code Discussion**
 In this section, we will discuss a list of classes and their purposes.
 
 **EventType Class:** this class defines the three different types of events that an Event can have.     
@@ -490,7 +493,7 @@ Constructors:
 
 
 
-# <a name="_ms8596jo1se1"></a>**IX. Verification using Tracing**
+**IX. Verification using Tracing**
 We will perform a sample simulation run for 600 seconds.
 
 |<p>Enter how long the simulation should run: 600</p><p>Clock is 0.0</p><p>S1 is currently: inactive. S1 has 0 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 7.0 and is a(n) Arrival type.</p><p></p><p>Clock is 7.0</p><p>S1 is currently: active. S1 has 0 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 40.0 and is a(n) Arrival type.</p><p></p><p>Clock is 40.0</p><p>S1 is currently: active. S1 has 1 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 49.0 and is a(n) Arrival type.</p><p></p><p>Clock is 49.0</p><p>S1 is currently: active. S1 has 2 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 67.0 and is a(n) Arrival type.</p><p></p><p>Clock is 67.0</p><p>S1 is currently: active. S1 has 3 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 153.0 and is a(n) Arrival type.</p><p></p><p>Clock is 153.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 193.0 and is a(n) Arrival type.</p><p></p><p>Clock is 193.0</p><p>S1 is currently: active. S1 has 5 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 257.0 and is a(n) Departure type.</p><p></p><p>Clock is 257.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 2's next event occurs at 257.0 and is a(n) Arrival type.</p><p></p><p>Clock is 257.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 264.0 and is a(n) Departure type.</p><p></p><p>Clock is 264.0</p><p>S1 is currently: active. S1 has 3 people in queue.</p><p>S2 is currently: active. S2 has 1 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 289.0 and is a(n) Arrival type.</p><p></p><p>Clock is 289.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 1 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 2's next event occurs at 308.0 and is a(n) Departure type.</p><p></p><p>Clock is 308.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 3's next event occurs at 308.0 and is a(n) Arrival type.</p><p></p><p>Clock is 308.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: active. S3 has 0 people in queue.</p><p>Server 3's next event occurs at 357.0 and is a(n) Departure type.</p><p></p><p>Clock is 357.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 365.0 and is a(n) Arrival type.</p><p></p><p>Clock is 365.0</p><p>S1 is currently: active. S1 has 5 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 366.0 and is a(n) Departure type.</p><p></p><p>Clock is 366.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 1 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 2's next event occurs at 416.0 and is a(n) Departure type.</p><p></p><p>Clock is 416.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 3's next event occurs at 416.0 and is a(n) Arrival type.</p><p></p><p>Clock is 416.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: active. S3 has 0 people in queue.</p><p>Server 3's next event occurs at 420.0 and is a(n) Departure type.</p><p></p><p>Clock is 420.0</p><p>S1 is currently: active. S1 has 4 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 449.0 and is a(n) Arrival type.</p><p></p><p>Clock is 449.0</p><p>S1 is currently: active. S1 has 5 people in queue.</p><p>S2 is currently: active. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 2's next event occurs at 464.0 and is a(n) Departure type.</p><p></p><p>Clock is 464.0</p><p>S1 is currently: active. S1 has 5 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 3's next event occurs at 464.0 and is a(n) Arrival type.</p><p></p><p>Clock is 464.0</p><p>S1 is currently: active. S1 has 5 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: active. S3 has 0 people in queue.</p><p>Server 3's next event occurs at 505.0 and is a(n) Departure type.</p><p></p><p>Clock is 505.0</p><p>S1 is currently: active. S1 has 5 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>Server 1's next event occurs at 556.0 and is a(n) Arrival type.</p><p></p><p>Clock is 556.0</p><p>S1 is currently: active. S1 has 6 people in queue.</p><p>S2 is currently: inactive. S2 has 0 people in queue.</p><p>S3 is currently: inactive. S3 has 0 people in queue.</p><p>The next event occurs at 600.0 and is a(n) End of Simulation type.</p><p></p><p>The end of the simulation has been reached at time 600.0.</p><p></p><p>Stats: </p><p>Total number of customers: 10</p><p>Total number of customers served: 3</p><p>Average interarrival time: 55</p><p>Average service time for s1: 59</p><p>Average service time for s2: 20</p><p>Average service time for s3: 9</p><p>---------------------------------</p><p>Max length of server 1's queue is: 6</p><p>Max length of server 2's queue is: 1</p><p>Max length of server 3's queue is: 0</p><p>---------------------------------</p><p>Average wait time for server 1's queue is: 232</p><p>Average wait time for server 2's queue is: 9</p><p>Average wait time for server 3's queue is: 0</p>|
@@ -548,7 +551,7 @@ LS<sub>i</sub> = number of people using server i, LQ<sub>i</sub> = length of que
 
 
 
-# <a name="_vlulb02lx8eh"></a>X. Validation
+**X. Validation**
 Simulation results with a runtime of 10,000 seconds.
 
 |<p>Total number of customers: 105</p><p>Total number of customers served: 85</p><p>Average interarrival time: 95</p><p>Average service time for s1: 90</p><p>Average service time for s2: 45</p><p>Average service time for s3: 26</p><p>---------------------------------</p><p>Max length of server 1's queue is: 17</p><p>Max length of server 2's queue is: 5</p><p>Max length of server 3's queue is: 3</p><p>---------------------------------</p><p>Average wait time for server 1's queue is: 530</p><p>Average wait time for server 2's queue is: 30</p><p>Average wait time for server 3's queue is: 9</p>|
@@ -566,7 +569,7 @@ Simulation comparison with the real system
 In each of these cases, the simulation results accurately depict the real world system as they fall within the averages fall within the margins denoted by the standard deviations of the original results.
 
 
-# <a name="_62gdhpjxk403"></a>XI. Experimental Design
+**XI. Experimental Design**
 
 **Experiment 1**: Adding a parallel server to the first station
 
@@ -618,7 +621,8 @@ This doesn’t change our previously defined state diagrams (figures 4-10) other
 This was implemented in the code as follows:
 
 No classes were modified in this experiment, the only change made was server 1 calls generateS1Enhanced() to generate a service time that is reduced by 20%, which the function’s output is multiplied by 0.8.
-# <a name="_8wmmikk7n7xs"></a>XII. Production Runs and analysis
+
+**XII. Production Runs and analysis**
 
 |<p>Enter how long the simulation should run: 30000</p><p></p><p>**Stats for Original System:**</p><p>Total number of customers: 301</p><p>Total number of customers served: 291</p><p>Average interarrival time: 98</p><p>Average service time for s1: 89</p><p>Average service time for s2: 53</p><p>Average service time for s3: 30</p><p>---------------------------------</p><p>Max length of server 1's queue is: 25</p><p>Max length of server 2's queue is: 7</p><p>Max length of server 3's queue is: 3</p><p>---------------------------------</p><p>Average wait time for server 1's queue is: 509</p><p>Average wait time for server 2's queue is: 44</p><p>Average wait time for server 3's queue is: 8</p><p></p><p>-----------------------------------------------------------------------</p><p>**Stats for Parallel Server 1 Simulation**: </p><p>Total number of customers: 292</p><p>Total number of customers served: 291</p><p>Average interarrival time: 102</p><p>Average service time for s1: 107</p><p>Average service time for s2: 57</p><p>Average service time for s3: 25</p><p>---------------------------------</p><p>Max length of server 1's queue is: 6</p><p>Max length of server 2's queue is: 8</p><p>Max length of server 3's queue is: 3</p><p>---------------------------------</p><p>Average wait time for server 1's queue is: 36</p><p>Average wait time for server 2's queue is: 78</p><p>Average wait time for server 3's queue is: 8</p><p></p><p>-----------------------------------------------------------------------</p><p>**Stats for Rearranged Server Simulation:** </p><p>Total number of customers: 286</p><p>Total number of customers served: 276</p><p>Average interarrival time: 103</p><p>Average service time for s3: 31</p><p>Average service time for s1: 90</p><p>Average service time for s2: 57</p><p>---------------------------------</p><p>Max length of server 1's queue is: 16</p><p>Max length of server 2's queue is: 5</p><p>Max length of server 3's queue is: 4</p><p>---------------------------------</p><p>Average wait time for server 3's queue is: 10</p><p>Average wait time for server 1's queue is: 487</p><p>Average wait time for server 2's queue is: 53</p><p></p><p>-----------------------------------------------------------------------</p><p>**Stats for Upgraded Server 1 Simulation:** </p><p>Total number of customers: 283</p><p>Total number of customers served: 281</p><p>Average interarrival time: 105</p><p>Average service time for s1: 73</p><p>Average service time for s2: 60</p><p>Average service time for s3: 32</p><p>---------------------------------</p><p>Max length of server 1's queue is: 7</p><p>Max length of server 2's queue is: 6</p><p>Max length of server 3's queue is: 5</p><p>---------------------------------</p><p>Average wait time for server 1's queue is: 111</p><p>Average wait time for server 2's queue is: 59</p><p>Average wait time for server 3's queue is: 10</p>|
 | :- |
@@ -632,7 +636,8 @@ Next, we want our customers to spend the least time waiting as studies have demo
 Finally, we must consider the cost of each of our models. Assuming the wage of our regular workers is $14.35/hour (Ontario’s current minimum wage) and the wage of our skilled workers is $18/hour. We have run the simulation for 30000 seconds or 8.33hours, that is to say a full day’s work for an employee, let us assume they are paid for 8.5 hours since there is some prep work and cleaning to do upon opening and closing the store. Following these assumptions, our costs for the original scenario would be 3 regular workers working for 8.5 hours (3\*8.5\*14.35=$365.93/day). Implementing parallel servers would require hiring one more worker, meaning 4 workers for 8.5 hours. This would increase the cost by $121.98 per diem (4\*8.5\*14.35=$487.9/day). There would also be a remodeling cost for the location to accommodate a second worker at this station. Modifying the order of the servers by placing them in the following order, 3-1-2, would involve the upfront costs of renovations and the time training the employees to work in this order. It would however not change a thing in terms of daily expenses and would cost the same as our original scenario ($365.93/day). Hiring a more skilled worker would require 2 regular workers and one skilled worker for 8.5hours ((2\*14.35+18)\*8.5=$396.95/day). Which represents a small increase of 31.02/day from the original scenario.
 
 Looking at all these factors, we can conclude that we should choose to implement either the parallel server scenario which is optimal in every way except ongoing labour costs or the skilled worker scenario which comes close to the parallel servers in terms of performance with a smaller increase in labour costs. The skilled worker scenario suffers most when it comes to total wait time, with a difference of almost a minute (58 seconds).
-# <a name="_gofrghkqvgb"></a>XIII. Summary and concluding results
+
+**XIII. Summary and concluding results**
 Our goal was to redesign a sandwich shop system where there are currently three stations that are accessed sequentially and each station has its own waiting line. We began by collecting data of the current system for modeling purposes and turning that data into a model. Once that model was built, we validated it and verified the system. 
 
 During validation and verification, we noticed that the first server is where there was a bottleneck. We came up with three hypotheses on how to improve operations and relieve this pressure on the system. Our first involved adding a second parallel server to the first station, thus increasing the server’s capacity to two. Our second involved changing the order of the servers by having them pay first then get their sandwich made thus placing the orders in the following order 3-1-2. Our third and final one involved replacing the first station’s worker by a more skilled worker who can cut down the service time by 80%, through efficiency.
@@ -647,11 +652,11 @@ For the skilled worker scenario, we were able to reduce the time spent in the sy
 
 We have therefore concluded that the second scenario is inefficient and does not solve the problems encountered by our current system and can therefore be discounted. The other two scenarios both have their pros and cons and either could be selected for implementation to improve the current system. If minimizing clients’ waiting is the priority, then implementing parallel servers would be the ideal scenario, as it improves the average time a customer spends in a queue by almost 50 seconds. It does, however, cost more than hiring a skilled worker as. If minimizing cost is the priority, then replacing the first server with a skilled worker would be the ideal scenario to select.
 
-# <a name="_hys70ossbw1"></a>Appendix
+**Appendix**
 - Link to the GitHub repository that contains the code of the original system: <https://github.com/mehtameet12/ServerQueueSimulation.git>
 - Code of the experimental designs can be found under the branch “ExperimentalDesigns”: <https://github.com/mehtameet12/ServerQueueSimulation/tree/ExperimentalDesigns>
 
-# <a name="_w07yg6wk7x5w"></a>Bibliography
+**Bibliography**
 
 |[1]|D. H. Maister, "The Psychology of Waiting Lines," 2005. [Online]. Available: http://www.columbia.edu/~ww2040/4615S13/Psychology\_of\_Waiting\_Lines.pdf#:~:text=The%20Psychology%20of%20Waiting%20Lines%20%20considered%20a,being%20attentive%20to%20the%20passage%20of%20time%20itself.. [Accessed 5 December 2022].|
 | :- | :- |
